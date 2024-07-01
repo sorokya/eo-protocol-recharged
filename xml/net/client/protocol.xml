@@ -41,4 +41,13 @@
             <comment>This value is added to the client encryption key after the packet is sent</comment>
         </field>
     </packet>
+
+    <packet family="Chat" action="Private">
+      <comment>Sending a private message</comment>
+      <chunked>
+        <field name="name" type="string"/>
+        <break/>
+        <field name="message" type="string"/>
+      </chunked>
+    </packet>
 </protocol>

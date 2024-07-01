@@ -278,4 +278,38 @@
         <field name="encryption_modifier1" type="char" />
         <field name="encryption_modifier2" type="char" />
     </packet>
+
+    <packet family="Chat" action="Private">
+      <comment>A private message</comment>
+      <chunked>
+        <field name="name" type="string"/>
+        <break/>
+        <field name="message" type="string"/>
+      </chunked>
+    </packet>
+
+    <enum name="BannerType" type="char">
+      <comment>Decoration type for banner messages</comment>
+      <value name="Grey">0</value>
+      <value name="BlinkingYellow">1</value>
+      <value name="BlinkingBlue">2</value>
+      <value name="BlinkingGreen">3</value>
+      <value name="BlinkingRed">4</value>
+      <value name="BlinkingXs">5</value>
+      <value name="Confetti">6</value>
+      <value name="Hearts">7</value>
+    </enum>
+
+    <packet family="Chat" action="Syn4">
+      <comment>Banner message</comment>
+      <field name="type" type="BannerType" />
+      <field name="banner_display_duration" type="short">
+        <comment>Number of seconds the banner is shown. The client expects a value of 2 or higher</comment>
+      </field>
+      <field name="permanent" type="bool">
+        <comment>If true the banner will show until a new banner is shown or the player logs out</comment>
+      </field>
+      <field name="message" type="string" />
+    </packet>
+
 </protocol>
