@@ -72,6 +72,19 @@
         </value>
     </enum>
 
+    <enum name="BannerType" type="char">
+      <comment>Decoration type for banner messages</comment>
+      <value name="Grey">0</value>
+      <value name="BlinkingYellow">1</value>
+      <value name="BlinkingBlue">2</value>
+      <value name="BlinkingGreen">3</value>
+      <value name="BlinkingRed">4</value>
+      <value name="BlinkingXs">5</value>
+      <value name="Confetti">6</value>
+      <value name="Hearts">7</value>
+    </enum>
+
+
     <struct name="MapFile">
         <comment>A map file (EMF)</comment>
         <field name="content" type="blob"/>
@@ -151,7 +164,114 @@
         <field name="shield" type="short"/>
         <field name="buddy_shoulder" type="short"/>
         <field name="buddy_ground" type="short"/>
-        <field name="unk1" type="short"/>
+        <field name="torch" type="short"/>
+    </struct>
+
+    <struct name="EquipmentItem">
+      <field name="id" type="short"/>
+      <field name="power" type="char"/>
+      <field name="accuracy" type="char"/>
+      <field name="dexterity" type="char"/>
+      <field name="defense" type="char"/>
+      <field name="vitality" type="char"/>
+      <field name="aura" type="char"/>
+    </struct>
+
+    <struct name="EquipmentPlay">
+        <comment>
+            Player equipment data.
+            Sent upon selecting a character and entering the game
+            Note that these values are item IDs.
+        </comment>
+        <field name="weapon" type="EquipmentItem"/>
+        <field name="shield" type="EquipmentItem"/>
+        <field name="armor" type="EquipmentItem"/>
+        <field name="hat" type="EquipmentItem"/>
+        <field name="boots" type="EquipmentItem"/>
+        <field name="gloves" type="EquipmentItem"/>
+        <field name="accessory" type="EquipmentItem"/>
+        <field name="belt" type="EquipmentItem"/>
+        <field name="necklace" type="EquipmentItem"/>
+        <array name="ring" type="EquipmentItem" length="2"/>
+        <array name="armlet" type="EquipmentItem" length="2"/>
+        <array name="bracer" type="EquipmentItem" length="2"/>
+        <field name="costume" type="EquipmentItem"/>
+        <field name="hat_cosmetic" type="EquipmentItem"/>
+        <field name="wings" type="EquipmentItem"/>
+        <field name="buddy_shoulder" type="EquipmentItem"/>
+        <field name="buddy_ground" type="EquipmentItem"/>
+        <field name="torch" type="EquipmentItem"/>
+    </struct>
+
+
+    <struct name="EquipmentMapInfo">
+        <comment>
+            Player equipment data.
+            Sent with map information about a nearby character.
+            Note that these values are graphic IDs.
+        </comment>
+        <field name="boots" type="short"/>
+        <field name="armor" type="short"/>
+        <field name="hat" type="short"/>
+        <field name="weapon" type="short"/>
+        <field name="shield" type="short"/>
+        <field name="buddy_shoulder" type="short"/>
+        <field name="buddy_ground" type="short"/>
+        <field name="torch" type="short"/>
+    </struct>
+
+    <struct name="CharacterMapInfo">
+        <comment>
+            Information about a nearby character.
+        </comment>
+        <chunked>
+            <field name="name" type="string"/>
+            <break/>
+            <field name="player_id" type="short"/>
+            <field name="coords" type="Coords"/>
+            <field name="unk1" type="short"/>
+            <field name="unk2" type="short"/>
+            <field name="unk3" type="short"/>
+            <field name="direction_sitting_hiding" type="char"/>
+            <field name="level" type="short"/>
+            <field name="unk4" type="char"/>
+            <field name="gender_skin" type="char"/>
+            <field name="hair_style" type="char"/>
+            <field name="hair_color" type="char"/>
+            <field name="hp" type="three"/>
+            <field name="max_hp" type="three"/>
+            <field name="tp" type="three"/>
+            <field name="max_tp" type="three"/>
+            <field name="guild_tag" type="string" length="3"/>
+            <field name="equipment" type="EquipmentMapInfo"/>
+        </chunked>
+    </struct>
+
+    <struct name="NpcMapInfo">
+        <comment>Information about a nearby NPC</comment>
+        <field name="index" type="short"/>
+        <field name="id" type="short"/>
+        <field name="coords" type="Coords"/>
+        <field name="direction" type="Direction"/>
+    </struct>
+
+    <struct name="ItemMapInfo">
+        <comment>Information about a nearby item on the ground</comment>
+        <field name="index" type="short"/>
+        <field name="item" type="Item"/>
+        <field name="coords" type="Coords"/>
+    </struct>
+
+    <struct name="NearbyInfo">
+        <comment>Information about nearby entities</comment>
+        <length name="characters_count" type="char"/>
+        <chunked>
+            <break/>
+            <array name="characters" type="CharacterMapInfo" length="characters_count" delimited="true"/>
+            <array name="npcs" type="NpcMapInfo"/>
+            <break/>
+            <array name="items" type="ItemMapInfo"/>
+        </chunked>
     </struct>
 
     <packet family="Init" action="Init">
@@ -171,7 +291,7 @@
                 <field name="client_encryption_value" type="short"/>
                 <field name="player_id" type="short"/>
                 <field name="challenge_response" type="three"/>
-                <field name="unk1" type="byte" />
+                <field name="extra_param_increment" type="byte" />
             </case>
             <case value="Banned">
                 <field name="ban_type" type="InitBanType"/>
@@ -274,9 +394,56 @@
         <field name="seq2" type="char" />
     </packet>
 
+    <packet family="Security" action="Confirm">
+        <comment>
+            Value compared against client value.
+            If they don't match a blank popup is spammed every ping (after 30 pings)
+        </comment>
+        <field name="anti_emulation_validation_server" type="int"/>
+    </packet>
+
     <packet family="Play" action="Confirm">
-        <field name="encryption_modifier1" type="char" />
-        <field name="encryption_modifier2" type="char" />
+        <chunked>
+            <field name="encryption_modifier1" type="char" />
+            <field name="encryption_modifier2" type="char" />
+            <field name="unk1" type="three"/>
+            <field name="unk2" type="three"/>
+            <field name="unk3" type="char"/>
+            <field name="unk4" type="char"/>
+            <field name="unk5" type="char"/>
+            <field name="unk6" type="char"/>
+            <field name="unk7" type="char"/>
+            <field name="unk8" type="char"/>
+            <field name="unk9" type="char"/>
+            <field name="unk10" type="char"/>
+            <field name="unk11" type="char"/>
+            <field name="unk12" type="short"/>
+            <field name="unk13" type="short"/>
+            <field name="unk14" type="short"/>
+            <break/>
+            <field name="unk15" type="short"/>
+            <break/>
+            <field name="motd" type="string"/>
+            <break/>
+            <field name="unk16" type="char"/>
+            <field name="equipment" type="EquipmentPlay"/>
+            <break/>
+            <field name="weight" type="Weight"/>
+            <array name="items" type="Item"/>
+            <break/>
+            <array name="spells" type="Spell"/>
+            <break/>
+            <field name="nearby" type="NearbyInfo"/>
+        </chunked>
+    </packet>
+
+    <packet family="Play" action="Update">
+      <chunked>
+        <array name="news" type="string" length="8" delimited="true"/>
+      </chunked>
+    </packet>
+
+    <packet family="Npc" action="Set">
     </packet>
 
     <packet family="Chat" action="Private">
@@ -287,29 +454,25 @@
         <field name="message" type="string"/>
       </chunked>
     </packet>
-
-    <enum name="BannerType" type="char">
-      <comment>Decoration type for banner messages</comment>
-      <value name="Grey">0</value>
-      <value name="BlinkingYellow">1</value>
-      <value name="BlinkingBlue">2</value>
-      <value name="BlinkingGreen">3</value>
-      <value name="BlinkingRed">4</value>
-      <value name="BlinkingXs">5</value>
-      <value name="Confetti">6</value>
-      <value name="Hearts">7</value>
-    </enum>
-
+ 
     <packet family="Chat" action="Syn4">
       <comment>Banner message</comment>
-      <field name="type" type="BannerType" />
+      <field name="type" type="BannerType"/>
       <field name="banner_display_duration" type="short">
         <comment>Number of seconds the banner is shown. The client expects a value of 2 or higher</comment>
       </field>
       <field name="permanent" type="bool">
         <comment>If true the banner will show until a new banner is shown or the player logs out</comment>
       </field>
-      <field name="message" type="string" />
+      <field name="message" type="string"/>
     </packet>
 
+    <packet family="Range" action="Result">
+      <comment>Nearby players or npcs appearing</comment>
+      <field name="nearby" type="NearbyInfo"/>
+    </packet>
+
+    <packet family="Refresh" action="Result">
+      <field name="nearby" type="NearbyInfo"/>
+    </packet>
 </protocol>
