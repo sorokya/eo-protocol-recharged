@@ -1,4 +1,75 @@
 <protocol>
+    <enum name="SitAction" type="char">
+      <comment>Whether the player wants to sit or stand</comment>
+      <value name="Sit">1</value>
+      <value name="Stand">2</value>
+    </enum>
+ 
+    <packet family="Attack" action="Do">
+      <comment>Attacking</comment>
+      <field name="direction" type="Direction"/>
+      <field name="timestamp" type="three"/>
+    </packet>
+
+    <packet family="Captcha" action="Request">
+      <comment>Requesting a new captcha</comment>
+      <field name="captcha_id" type="short"/>
+    </packet>
+
+    <packet family="Captcha" action="Result">
+      <comment>Submitting a captcha</comment>
+      <field name="captcha_id" type="short"/>
+      <field name="captcha" type="string"/>
+    </packet>
+
+    <packet family="Channel" action="Request">
+      <comment>Requesting map channel list</comment>
+      <field name="channel_id" type="char">
+        <comment>The players current channel</comment>
+      </field>
+    </packet>
+
+    <packet family="Channel" action="Set">
+      <comment>Switching to a new channel</comment>
+      <field name="channel_id" type="char"/>
+    </packet>
+
+    <packet family="Chat" action="Public">
+      <comment>Sending a public chat message</comment>
+      <field name="message" type="string"/>
+    </packet>
+
+    <packet family="Chat" action="Private">
+      <comment>Sending a private message</comment>
+      <chunked>
+        <field name="name" type="string"/>
+        <break/>
+        <field name="message" type="string"/>
+      </chunked>
+    </packet>
+
+    <packet family="Direction" action="Set">
+      <comment>Changing direction</comment>
+      <field name="direction" type="Direction"/>
+    </packet>
+
+    <packet family="Emote" action="Public">
+      <comment>Emoting</comment>
+      <field name="emote" type="char"/>
+    </packet>
+
+    <packet family="Group" action="Confirm">
+      <comment>Accepting party invite</comment>
+      <field name="request_type" type="PartyRequestType"/>
+      <field name="inviter_player_id" type="short"/>
+    </packet>
+
+    <packet family="Group" action="Request">
+      <comment>Group invite/join request</comment>
+      <field name="request_type" type="PartyRequestType"/>
+      <field name="player_id" type="short"/>
+    </packet>
+
     <packet family="Init" action="Init">
         <comment>
             Connection initialization request.
@@ -13,13 +84,79 @@
     </packet>
 
     <packet family="Login" action="Request">
-        <comment>Login request</comment>
+      <comment>
+          Login request
+          Password is encrypted
+      </comment>
         <chunked>
             <field name="username" type="string"/>
             <break/>
             <field name="password" type="string"/>
             <break/>
         </chunked>
+    </packet>
+
+    <!-- TODO: Confirm there is a break byte here -->
+    <packet family="Magic" action="Area">
+      <comment>Casting area spell</comment>
+      <chunked>
+        <field name="spell_id" type="short"/>
+        <break/>
+        <field name="timestamp" type="three"/>
+      </chunked>
+    </packet>
+
+    <!-- TODO: Confirm there is a break byte here -->
+    <packet family="Magic" action="Request">
+      <comment>Casting spell</comment>
+      <chunked>
+        <field name="spell_id" type="short"/>
+        <break/>
+        <field name="timestamp" type="three"/>
+      </chunked>
+    </packet>
+
+    <packet family="Move" action="Do">
+      <comment>Walking</comment>
+      <field name="direction" type="Direction"/>
+      <field name="timestamp" type="three"/>
+      <field name="coords" type="Coords"/>
+    </packet>
+
+    <packet family="Play" action="Play">
+      <comment>Enter game</comment>
+      <field name="session_id" type="three"/>
+      <field name="character_id" type="int"/>
+    </packet>
+
+    <packet family="Play" action="Request">
+        <comment>Selected a character</comment>
+        <field name="character_id" type="int"/>
+        <field name="encryption_modifier" type="char">
+            <comment>This value is added to the client encryption key after the packet is sent</comment>
+        </field>
+    </packet>
+
+    <!-- TODO: Confirm packet -->
+    <packet family="Range" action="Request">
+      <comment>Requesting info about nearby players and NPCs</comment>
+      <chunked>
+        <array name="player_ids" type="short"/>
+        <break/>
+        <array name="npc_indexes" type="char"/>
+      </chunked>
+    </packet>
+
+    <packet family="Rest" action="Request">
+      <comment>Sit/stand</comment>
+      <field name="sit_action" type="SitAction"/>
+      <switch field="sit_action">
+          <case value="Sit">
+              <field name="cursor_coords" type="Coords">
+                  <comment>The coordinates of the map cursor</comment>
+              </field>
+          </case>
+        </switch>
     </packet>
 
     <packet family="Security" action="Confirm">
@@ -34,20 +171,13 @@
         <dummy type="string">k</dummy>
     </packet>
 
-    <packet family="Play" action="Request">
-        <comment>Selected a character</comment>
-        <field name="character_id" type="int"/>
-        <field name="encryption_modifier" type="char">
-            <comment>This value is added to the client encryption key after the packet is sent</comment>
-        </field>
+    <packet family="Shop" action="Open">
+      <comment>Talking to a shop NPC</comment>
+      <field name="npc_index" type="short"/>
     </packet>
 
-    <packet family="Chat" action="Private">
-      <comment>Sending a private message</comment>
-      <chunked>
-        <field name="name" type="string"/>
-        <break/>
-        <field name="message" type="string"/>
-      </chunked>
+    <packet family="Shop" action="Sell">
+      <comment>Selling an item</comment>
+      <field name="item" type="Item"/>
     </packet>
 </protocol>

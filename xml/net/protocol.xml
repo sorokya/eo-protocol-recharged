@@ -31,8 +31,8 @@
         <value name="Channel">30</value>
         <value name="Npc">31</value>
         <value name="Range">32</value>
-        <value name="PlayerRange">33</value>
-        <value name="NpcRange">34</value>
+        <value name="NpcRange">33</value>
+        <value name="PlayerRange">34</value>
         <value name="Players">35</value>
         <value name="Player">36</value>
         <value name="Group">37</value>
@@ -135,32 +135,20 @@
 
     <struct name="Weight">
         <comment>Current carry weight and maximum carry capacity of a player</comment>
-        <field name="current" type="char"/>
-        <field name="max" type="char"/>
+        <field name="current" type="short"/>
+        <field name="max" type="short"/>
     </struct>
 
     <struct name="Item">
         <comment>An item reference with a 4-byte amount</comment>
         <field name="id" type="short"/>
+        <field name="power" type="char"/>
+        <field name="accuracy" type="char"/>
+        <field name="dexterity" type="char"/>
+        <field name="defense" type="char"/>
+        <field name="vitality" type="char"/>
+        <field name="aura" type="char"/>
         <field name="amount" type="int"/>
-    </struct>
-
-    <struct name="ThreeItem">
-        <comment>
-            An item reference with a 3-byte amount.
-            Used for shops, lockers, and various item transfers.
-        </comment>
-        <field name="id" type="short"/>
-        <field name="amount" type="three"/>
-    </struct>
-
-    <struct name="CharItem">
-        <comment>
-            An item reference with a 1-byte amount.
-            Used for craft ingredients.
-        </comment>
-        <field name="id" type="short"/>
-        <field name="amount" type="char"/>
     </struct>
 
     <struct name="Spell">
