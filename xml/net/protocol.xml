@@ -24,7 +24,6 @@
         <value name="Emote">21</value>
         <value name="Chat">22</value>
         <value name="Global">23</value>
-        <value name="Gift">26</value>
         <value name="Door">27</value>
         <value name="NpcRange">28</value>
         <value name="Warp">29</value>
@@ -56,9 +55,9 @@
         <value name="Law">57</value>
         <value name="Inn">58</value>
         <value name="Boss">59</value>
-        <value name="Gift2">60</value>
         <value name="Quest">61</value>
         <value name="Event">62</value>
+        <value name="Gift">63</value>
         <value name="Captcha">249</value>
         <value name="Init">255</value>
     </enum>

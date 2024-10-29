@@ -12,9 +12,9 @@
         <value name="FileEif">6</value>
         <value name="FileEnf">7</value>
         <value name="FileEsf">8</value>
-        <value name="PlayersList">9</value>
+        <value name="PlayersList">20</value>
         <value name="MapMutation">10</value>
-        <value name="PlayersListFriends">11</value>
+        <value name="PlayersListFriends">22</value>
         <value name="FileEcf">12</value>
     </enum>
 
@@ -343,6 +343,34 @@
             </case>
         </switch>
     </packet>
+
+    <packet family="Gift" action="Emote">
+      <comment>Gift inbox notification</comment>
+      <field name="num_items" type="short"/>
+    </packet>
+
+    <packet family="Gift" action="Open">
+      <comment>Opening gift inbox</comment>
+      <length name="num_items" type="short"/>
+      <array name="items" length="num_items" type="GiftItem"/>
+    </packet>
+
+    <struct name="GiftItem">
+      <comment>Item in gift inbox</comment>
+      <field name="item_id" type="short"/>
+      <field name="power" type="char"/>
+      <field name="accuracy" type="char"/>
+      <field name="dexterity" type="char"/>
+      <field name="defense" type="char"/>
+      <field name="vitality" type="char"/>
+      <field name="aura" type="char"/>
+      <field name="amount" type="three"/>
+      <length name="gifter_length" type="char"/>
+      <field name="gifter" type="string" length="gifter_length">
+        <comment>E for event reward</comment>
+      </field>
+      <field name="expires_days" type="short"/>
+    </struct>
 
     <packet family="Login" action="Confirm">
         <comment>Successful login result</comment>

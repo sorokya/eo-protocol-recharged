@@ -58,6 +58,21 @@
       <field name="emote" type="char"/>
     </packet>
 
+    <packet family="Gift" action="Open">
+      <comment>Opening gift inbox</comment>
+      <dummy type="char">0</dummy>
+    </packet>
+
+    <packet family="Global" action="Open">
+      <comment>Opening the global chat</comment>
+      <dummy type="string">y</dummy>
+    </packet>
+
+    <packet family="Global" action="Close">
+      <comment>Closing the global chat</comment>
+      <dummy type="string">n</dummy>
+    </packet>
+
     <packet family="Group" action="Confirm">
       <comment>Accepting party invite</comment>
       <field name="request_type" type="PartyRequestType"/>
