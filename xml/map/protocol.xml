@@ -77,15 +77,15 @@
         <comment>NPC spawn EMF entity</comment>
         <field name="coords" type="Coords"/>
         <field name="id" type="short"/>
+        <field name="unk1" type="char"/>
+        <field name="unk2" type="char"/>
+        <field name="unk3" type="char"/>
+        <field name="unk4" type="char"/>
+        <field name="unk5" type="char"/>
         <field name="spawn_type" type="char"/>
         <field name="spawn_time" type="short"/>
+        <field name="unk6" type="char"/>
         <field name="amount" type="char"/>
-    </struct>
-
-    <struct name="MapLegacyDoorKey">
-        <comment>Legacy EMF entity used to specify a key on a door</comment>
-        <field name="coords" type="Coords"/>
-        <field name="key" type="short"/>
     </struct>
 
     <struct name="MapItem">
@@ -98,20 +98,75 @@
         <field name="amount" type="three"/>
     </struct>
 
-    <struct name="MapWarp">
-        <comment>Warp EMF entity</comment>
-        <field name="destination_map" type="short"/>
-        <field name="destination_coords" type="Coords"/>
-        <field name="level_required" type="char"/>
-        <field name="door" type="short"/>
+    <struct name="MapGather">
+        <comment>Gather spawn EMF entity</comment>
+        <field name="coords" type="Coords"/>
+        <field name="unk1" type="char"/>
+        <field name="unk2" type="char"/>
+        <field name="unk3" type="char"/>
+        <field name="unk4" type="char"/>
+        <field name="unk5" type="char"/>
+        <field name="unk6" type="char"/>
+        <field name="unk7" type="char"/>
+        <field name="unk8" type="char"/>
+        <field name="unk9" type="char"/>
+        <field name="item_id" type="short"/>
+        <field name="spawn_time" type="short"/>
+        <field name="unk10" type="char"/>
+        <field name="max_amount" type="char"/>
     </struct>
 
-    <struct name="MapSign">
-        <comment>Sign EMF entity</comment>
-        <field name="coords" type="Coords"/>
-        <length name="string_data_length" type="short" offset="-1"/>
-        <field name="string_data" type="encoded_string" length="string_data_length"/>
-        <field name="title_length" type="char"/>
+    <struct name="MapUnk">
+        <field name="unk1" type="char"/>
+        <field name="unk2" type="char"/>
+        <field name="unk3" type="char"/>
+        <field name="unk4" type="char"/>
+        <field name="unk5" type="char"/>
+        <field name="unk6" type="char"/>
+        <field name="unk7" type="char"/>
+        <field name="unk8" type="char"/>
+        <field name="unk9" type="char"/>
+    </struct>
+
+    <struct name="MapUnk2">
+        <field name="unk1" type="char"/>
+        <field name="unk2" type="char"/>
+        <field name="unk3" type="char"/>
+        <field name="unk4" type="char"/>
+    </struct>
+
+    <struct name="MapUnk3">
+        <field name="unk1" type="char"/>
+        <field name="unk2" type="char"/>
+        <field name="unk3" type="char"/>
+    </struct>
+
+    <struct name="MapUnk4">
+        <field name="unk1" type="char"/>
+        <field name="unk2" type="char"/>
+        <field name="unk3" type="char"/>
+        <field name="unk4" type="char"/>
+    </struct>
+
+    <struct name="MapUnk5">
+        <field name="unk1" type="char"/>
+        <field name="unk2" type="char"/>
+        <field name="unk3" type="char"/>
+        <field name="unk4" type="char"/>
+        <field name="unk5" type="char"/>
+        <field name="unk6" type="char"/>
+        <field name="unk7" type="char"/>
+        <field name="unk8" type="char"/>
+        <field name="unk9" type="char"/>
+    </struct>
+
+    <struct name="MapWarp">
+        <comment>Warp EMF entity</comment>
+        <field name="spec" type="char"/>
+        <field name="door" type="char"/>
+        <field name="quest_id" type="short"/>
+        <field name="destination_map" type="short"/>
+        <field name="destination_coords" type="Coords"/>
     </struct>
 
     <struct name="MapTileSpecRowTile">
@@ -125,6 +180,31 @@
         <field name="y" type="char"/>
         <length name="tiles_count" type="char"/>
         <array name="tiles" type="MapTileSpecRowTile" length="tiles_count"/>
+    </struct>
+
+    <struct name="MapEffectRowTile">
+        <comment>A single tile in a row of warp effects</comment>
+        <field name="x" type="char"/>
+        <field name="unk1" type="char"/>
+        <field name="unk2" type="char"/>
+        <field name="unk3" type="char"/>
+        <field name="unk4" type="char"/>
+        <field name="unk5" type="char"/>
+        <field name="unk6" type="char"/>
+        <field name="unk7" type="char"/>
+        <field name="unk8" type="char"/>
+        <field name="unk9" type="char"/>
+        <field name="unk10" type="char"/>
+        <field name="unk11" type="char"/>
+        <field name="unk12" type="char"/>
+        <field name="unk13" type="char"/>
+    </struct>
+
+    <struct name="MapEffectRow">
+        <comment>A row of warp effects</comment>
+        <field name="y" type="char"/>
+        <length name="tiles_count" type="char"/>
+        <array name="tiles" type="MapWarpRowTile" length="tiles_count"/>
     </struct>
 
     <struct name="MapWarpRowTile">
@@ -159,42 +239,99 @@
         <array name="graphic_rows" type="MapGraphicRow" length="graphic_rows_count"/>
     </struct>
 
+    <enum name="MapTileStepMode" type="char">
+      <value name="Footprints">0</value>
+      <value name="Disco">1</value>
+      <value name="Exclude">2</value>
+    </enum>
+
+    <struct name="MapTileStep">
+      <field name="graphic" type="short"/>
+      <field name="mode" type="MapTileStepMode"/>
+    </struct>
+
     <struct name="Emf">
         <comment>Endless Map File</comment>
         <field type="string" length="3">EMF</field>
         <array name="rid" type="short" length="2"/>
-        <field name="name" type="encoded_string" length="24" padded="true"/>
-        <field name="type" type="MapType"/>
-        <field name="timed_effect" type="MapTimedEffect"/>
-        <field name="music_id" type="char"/>
-        <field name="music_control" type="MapMusicControl"/>
-        <field name="ambient_sound_id" type="short"/>
+        <field name="version" type="char"/>
+        <field name="sub_version" type="char"/>
         <field name="width" type="char"/>
         <field name="height" type="char"/>
+        <field name="name" type="encoded_string" length="32" padded="true"/>
+        <field name="unk1" type="char"/>
         <field name="fill_tile" type="short"/>
-        <field name="map_available" type="bool"/>
-        <field name="can_scroll" type="bool"/>
-        <field name="relog_x" type="char"/>
-        <field name="relog_y" type="char"/>
-        <!-- The official client and server don't use this value. -->
-        <field type="char">0</field>
+        <array name="tile_steps" type="MapTileStep" length="4"/>
+        <field name="unk2" type="char"/>
+        <field name="block_mode" type="char"/>
+        <field name="unk3" type="char"/>
+        <field name="ignore_flag" type="char"/>
+        <field name="fill_footsteps" type="char"/>
+        <field name="fill_spec_type" type="char"/>
+        <field name="unk4" type="char"/>
+        <field name="channel_busy" type="char"/>
+        <field name="channel_full" type="char"/>
+        <field name="channel_unk" type="char"/>
+        <field name="channel_swap_delay" type="char"/>
+        <field name="unk5" type="char"/>
+        <field name="unk6" type="char"/>
+        <field name="weather_type" type="char"/>
+        <field name="unk7" type="char"/>
+        <field name="day_mode" type="char"/>
+        <field name="day_mode_override" type="char"/>
+        <field name="ambient_light" type="char"/>
+        <field name="background_light" type="char"/>
+        <field name="combat_type" type="char"/>
+        <field name="hp_drain_type" type="char"/>
+        <field name="tp_drain_type" type="char"/>
+        <field name="music_volume" type="char"/>
+        <field name="music_id" type="char"/>
+        <field name="music_extra" type="char"/>
+        <array name="ambient_sounds" type="char" length="3"/>
+        <field name="allow_minimap" type="bool"/>
+        <field name="allow_scroll" type="bool"/>
+
+        <field name="unk8" type="char"/>
+        <field name="unk9" type="char"/>
+        <field name="unk10" type="char"/>
+        <field name="unk11" type="char"/>
+        <field name="unk12" type="char"/>
+        <field name="unk13" type="char"/>
+        <field name="unk14" type="char"/>
+        <field name="unk15" type="char"/>
+        <field name="unk16" type="char"/>
+        <field name="unk17" type="char"/>
+        <field name="unk18" type="char"/>
+        <field name="unk19" type="char"/>
+        <field name="relog_coords" type="Coords"/>
+
         <length name="npcs_count" type="char"/>
         <array name="npcs" type="MapNpc" length="npcs_count"/>
-        <length name="legacy_door_keys_count" type="char"/>
-        <array name="legacy_door_keys" type="MapLegacyDoorKey" length="legacy_door_keys_count"/>
+
+        <field name="unk20" type="char"/>
+
+        <length name="unk_count" type="char"/>
+        <array name="unks" type="MapUnk" length="unk_count"/>
+
+        <field name="unk21" type="char"/>
+        <field name="unk22" type="char"/>
+
         <length name="items_count" type="char"/>
         <array name="items" type="MapItem" length="items_count"/>
+
+        <length name="unk2_count" type="char"/>
+        <array name="unk2s" type="MapUnk2" length="unk2_count"/>
+
+        <length name="gather_count" type="char"/>
+        <array name="gathers" type="MapGather" length="gather_count"/>
+
+        <length name="unk3_count" type="char"/>
+        <array name="unk3s" type="MapUnk3" length="unk3_count"/>
+
         <length name="tile_spec_rows_count" type="char"/>
         <array name="tile_spec_rows" type="MapTileSpecRow" length="tile_spec_rows_count"/>
+
         <length name="warp_rows_count" type="char"/>
         <array name="warp_rows" type="MapWarpRow" length="warp_rows_count"/>
-        <array name="graphic_layers" type="MapGraphicLayer" length="9">
-            <comment>
-                The 9 layers of map graphics.
-                Order is [Ground, Object, Overlay, Down Wall, Right Wall, Roof, Top, Shadow, Overlay2]
-            </comment>
-        </array>
-        <length name="signs_count" type="char"/>
-        <array name="signs" type="MapSign" length="signs_count"/>
     </struct>
 </protocol>

@@ -149,6 +149,7 @@
         <array name="rid" type="short" length="2"/>
         <field name="total_items_count" type="short"/>
         <field name="version" type="char"/>
+        <field name="sub_version" type="char"/>
         <array name="items" type="EifRecord"/>
     </struct>
 

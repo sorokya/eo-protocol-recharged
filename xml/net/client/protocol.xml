@@ -136,7 +136,7 @@
       </chunked>
     </packet>
 
-    <packet family="Move" action="Do">
+    <packet family="Move" action="Set">
       <comment>Walking</comment>
       <field name="direction" type="Direction"/>
       <field name="timestamp" type="three"/>
@@ -177,6 +177,11 @@
               </field>
           </case>
         </switch>
+    </packet>
+
+    <packet family="Refresh" action="Request">
+      <comment>Requesting refresh</comment>
+      <break />
     </packet>
 
     <packet family="Security" action="Confirm">
