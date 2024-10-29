@@ -216,12 +216,17 @@
         <field name="name" type="string" length="name_length"/>
         <field name="parent_type" type="char"/>
         <field name="stat_group" type="char"/>
-        <field name="str" type="short"/>
-        <field name="intl" type="short"/>
-        <field name="wis" type="short"/>
-        <field name="agi" type="short"/>
-        <field name="con" type="short"/>
-        <field name="cha" type="short"/>
+        <field name="unk1" type="short"/>
+        <field name="unk2" type="short"/>
+        <field name="unk3" type="short"/>
+        <field name="unk4" type="short"/>
+        <field name="unk5" type="short"/>
+        <field name="power" type="short"/>
+        <field name="accuracy" type="short"/>
+        <field name="defense" type="short"/>
+        <field name="dexterity" type="short"/>
+        <field name="vitality" type="short"/>
+        <field name="aura" type="short"/>
     </struct>
 
     <struct name="Ecf">
@@ -230,6 +235,7 @@
         <array name="rid" type="short" length="2"/>
         <field name="total_classes_count" type="short"/>
         <field name="version" type="char"/>
+        <field name="sub_version" type="char"/>
         <array name="classes" type="EcfRecord"/>
     </struct>
 
@@ -304,6 +310,7 @@
         <array name="rid" type="short" length="2"/>
         <field name="total_skills_count" type="short"/>
         <field name="version" type="char"/>
+        <field name="sub_version" type="char"/>
         <array name="skills" type="EsfRecord"/>
     </struct>
 </protocol>

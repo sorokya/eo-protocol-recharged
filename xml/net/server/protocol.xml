@@ -233,8 +233,9 @@
             <field name="unk2" type="short"/>
             <field name="unk3" type="short"/>
             <field name="direction_sitting_hiding" type="char"/>
-            <field name="level" type="short"/>
             <field name="unk4" type="char"/>
+            <field name="level" type="short"/>
+            <field name="unk5" type="char"/>
             <field name="gender_skin" type="char"/>
             <field name="hair_style" type="char"/>
             <field name="hair_color" type="char"/>
@@ -474,5 +475,25 @@
 
     <packet family="Refresh" action="Result">
       <field name="nearby" type="NearbyInfo"/>
+    </packet>
+
+    <packet family="Attack" action="Drop">
+      <comment>Nearby NPC killed by player and item dropped</comment>
+      <field name="killer_direction" type="Direction"/>
+      <field name="killer_player_id" type="short"/>
+      <field name="npc_index" type="short"/>
+      <field name="unk1" type="short"/>
+      <field name="damage" type="int"/>
+      <field name="unk2" type="char"/>
+      <field name="drop_id" type="short"/>
+      <field name="power" type="char"/>
+      <field name="accuracy" type="char"/>
+      <field name="dexterity" type="char"/>
+      <field name="defense" type="char"/>
+      <field name="vitality" type="char"/>
+      <field name="aura" type="char"/>
+      <field name="amount" type="int"/>
+      <field name="drop_index" type="short"/>
+      <field name="coords" type="Coords"/>
     </packet>
 </protocol>

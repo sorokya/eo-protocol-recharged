@@ -83,6 +83,11 @@
         <field name="hdid" type="string" length="hdid_length"/>
     </packet>
 
+    <packet family="Item" action="Pickup">
+      <comment>Picking up an item</comment>
+      <field name="item_index" type="short"/>
+    </packet>
+
     <packet family="Login" action="Request">
       <comment>
           Login request
