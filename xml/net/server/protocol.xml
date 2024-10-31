@@ -46,6 +46,16 @@
         </value>
     </enum>
 
+    <enum name="PlayerKilledState" type="char">
+        <comment>Flag to indicate that a player has been killed</comment>
+        <value name="Alive">1</value>
+        <value name="Killed">2</value>
+    </enum>
+
+    <enum name="PlayResult" type="short">
+      <value name="Ok">1</value>
+    </enum>
+
     <enum name="CharacterIcon" type="char">
         <comment>Icon displayed in paperdolls, books, and the online list</comment>
         <value name="Player">1</value>
@@ -84,6 +94,16 @@
       <value name="Hearts">7</value>
     </enum>
 
+    <enum name="WarpType" type="char">
+      <value name="Local">1</value>
+      <value name="Switch">2</value>
+    </enum>
+
+    <enum name="WarpAnimation" type="char">
+      <value name="None">0</value>
+      <value name="Scroll">1</value>
+      <value name="Admin">2</value>
+    </enum>
 
     <struct name="MapFile">
         <comment>A map file (EMF)</comment>
@@ -165,6 +185,38 @@
         <field name="buddy_shoulder" type="short"/>
         <field name="buddy_ground" type="short"/>
         <field name="torch" type="short"/>
+    </struct>
+
+    <struct name="CharacterStatsPlay">
+      <field name="hp" type="three"/>
+      <field name="max_hp" type="three"/>
+      <field name="tp" type="three"/>
+      <field name="max_tp" type="three"/>
+      <field name="sp" type="short"/>
+      <field name="max_sp" type="short"/>
+      <field name="stat_points" type="short"/>
+      <field name="skill_points" type="short"/>
+      <field name="karma" type="short"/>
+      <field name="secondary" type="CharacterSecondaryStats"/>
+      <field name="base" type="CharacterBaseStats"/>
+    </struct>
+
+    <struct name="CharacterBaseStats">
+      <field name="power" type="short"/>
+      <field name="defense" type="short"/>
+      <field name="accuracy" type="short"/>
+      <field name="dexterity" type="short"/>
+      <field name="vitality" type="short"/>
+      <field name="aura" type="short"/>
+    </struct>
+
+    <struct name="CharacterSecondaryStats">
+      <field name="damage_low" type="three"/>
+      <field name="damage_high" type="three"/>
+      <field name="hit_rate" type="three"/>
+      <field name="evade" type="three"/>
+      <field name="armor" type="three"/>
+      <field name="crit_chance" type="char"/>
     </struct>
 
     <struct name="EquipmentItem">
@@ -259,7 +311,7 @@
     <struct name="ItemMapInfo">
         <comment>Information about a nearby item on the ground</comment>
         <field name="index" type="short"/>
-        <field name="item" type="Item"/>
+        <field name="item" type="ThreeItem"/>
         <field name="coords" type="Coords"/>
     </struct>
 
@@ -273,6 +325,31 @@
             <break/>
             <array name="items" type="ItemMapInfo"/>
         </chunked>
+    </struct>
+
+    <struct name="NpcUpdatePosition">
+        <comment>An NPC walking</comment>
+        <field name="npc_index" type="short"/>
+        <field name="coords" type="Coords"/>
+        <field name="direction" type="Direction"/>
+    </struct>
+
+    <struct name="NpcUpdateAttack">
+        <comment>An NPC attacking</comment>
+        <field name="npc_index" type="short"/>
+        <field name="direction" type="Direction"/>
+        <field name="player_id" type="short"/>
+        <field name="hp_percentage" type="char"/>
+        <field name="killed" type="PlayerKilledState"/>
+        <field name="damage" type="int"/>
+        <field name="unk" type="char"/>
+    </struct>
+
+    <struct name="NpcUpdateChat">
+        <comment>An NPC talking</comment>
+        <field name="npc_index" type="short"/>
+        <length name="message_length" type="char"/>
+        <field name="message" type="string" length="message_length"/>
     </struct>
 
     <packet family="Init" action="Init">
@@ -342,6 +419,43 @@
                 </chunked>
             </case>
         </switch>
+    </packet>
+
+    <struct name="GatherSpot">
+      <field name="index" type="char"/>
+      <field name="amount" type="char"/>
+    </struct>
+
+    <packet family="Gather" action="Get">
+      <comment>Nearby gather spots appearing</comment>
+      <array name="spots" type="GatherSpot"/>
+    </packet>
+
+    <packet family="Gather" action="Set">
+      <comment>Start gathering</comment>
+      <array name="session_id" type="short" length="2"/>
+      <field name="gather_index" type="char"/>
+    </packet>
+
+    <packet family="Gather" action="Update">
+      <comment>Gather spot amount updating</comment>
+      <field name="gather_index" type="char"/>
+      <field name="amount" type="char"/>
+    </packet>
+
+    <packet family="Gather" action="Pickup">
+      <comment>Getting item from gather spot</comment>
+      <field name="item_id" type="short"/>
+      <field name="power" type="char"/>
+      <field name="accuracy" type="char"/>
+      <field name="dexterity" type="char"/>
+      <field name="defense" type="char"/>
+      <field name="vitality" type="char"/>
+      <field name="aura" type="char"/>
+      <field name="sfx_id" type="char"/>
+      <field name="weight" type="Weight"/>
+      <field name="experience" type="int"/>
+      <field name="experience_padding" type="byte"/> <!-- Just doing this so I don't have to implement five byte numbers yet.. -->
     </packet>
 
     <packet family="Gift" action="Emote">
@@ -417,6 +531,27 @@
         </chunked>
     </packet>
 
+    <packet family="Move" action="Result">
+      <comment>Result from player moving</comment>
+      <chunked>
+        <field name="coords" type="Coords"/>
+        <field name="unk" type="char"/>
+        <array name="player_ids" type="short"/>
+        <break/>
+        <array name="npc_indexes" type="short"/>
+        <break/>
+        <array name="items" type="ItemMapInfo"/>
+        <break/>
+      </chunked>
+    </packet>
+
+    <packet family="Move" action="Set">
+      <comment>Nearby player moved</comment>
+      <field name="player_id" type="short"/>
+      <field name="direction" type="Direction"/>
+      <field name="coords" type="Coords"/>
+    </packet>
+
     <packet family="Security" action="Set">
         <comment>Ping request</comment>
         <field name="seq1" type="short" />
@@ -466,13 +601,100 @@
         </chunked>
     </packet>
 
+    <packet family="Play" action="Result">
+        <field name="result_code" type="PlayResult"/>
+        <switch field="result_code">
+          <case value="Ok">
+            <chunked>
+                <field name="session_id" type="short"/>
+                <field name="character_id" type="int"/>
+                <field name="map_id" type="short"/>
+                <array name="map_rid" type="short" length="2"/>
+                <field name="max_file_size" type="three"/>
+                <field name="num_map_pubs" type="char"/>
+                <array name="map_pub_rid" type="short" length="2"/>
+                <field name="num_maps" type="short"/>
+                <field name="num_item_pubs" type="char"/>
+                <array name="item_pub_rid" type="short" length="2"/>
+                <field name="num_items" type="short"/>
+                <field name="num_npc_pubs" type="char"/>
+                <array name="npc_pub_rid" type="short" length="2"/>
+                <field name="num_npcs" type="short"/>
+                <field name="num_skill_pubs" type="char"/>
+                <array name="skill_pub_rid" type="short" length="2"/>
+                <field name="num_skills" type="short"/>
+                <field name="num_class_pubs" type="char"/>
+                <array name="class_pub_rid" type="short" length="2"/>
+                <field name="num_classes" type="short"/>
+                <field name="num_quest_pubs" type="char"/>
+                <array name="quest_pub_rid" type="short" length="2"/>
+                <field name="num_quests" type="short"/>
+                <field name="ip" type="string"/>
+                <break/>
+                <field name="name" type="string"/>
+                <break/>
+                <field name="title" type="string"/>
+                <break/>
+                <field name="guild" type="string"/>
+                <break/>
+                <field name="guild_rank_name" type="string"/>
+                <break />
+                <field name="class_id" type="char"/>
+                <field name="guild_tag" type="string" length="3"/>
+                <field name="admin_level" type="AdminLevel"/>
+                <field name="level" type="short"/>
+                <field name="experience" type="int"/>
+                <field name="experience_padding" type="byte"/> <!-- Just doing this so I don't have to implement five byte numbers yet.. -->
+                <field name="tnl" type="int"/>
+                <field name="stats" type="CharacterStatsPlay"/>
+                <field name="unk1" type="short"/>
+                <field name="unk2" type="short"/>
+                <field name="unk3" type="char"/>
+                <field name="unk4" type="char"/>
+                <field name="unk5" type="char"/>
+                <field name="unk6" type="char"/>
+                <field name="unk7" type="char"/>
+                <field name="unk8" type="char"/>
+                <field name="unk9" type="char"/>
+                <field name="unk10" type="char"/>
+                <field name="unk11" type="char"/>
+                <field name="unk12" type="char"/>
+                <field name="unk13" type="char"/>
+                <field name="unk14" type="char"/>
+                <field name="unk15" type="char"/>
+                <field name="unk16" type="char"/>
+                <field name="jail_map" type="short"/>
+                <field name="rescue_map" type="short"/>
+                <field name="rescue_coords" type="Coords"/>
+                <field name="unk17" type="short"/>
+                <field name="show_welcome_message" type="bool"/>
+                <break />
+            </chunked>
+          </case>
+        </switch>
+    </packet>
+
     <packet family="Play" action="Update">
       <chunked>
         <array name="news" type="string" length="8" delimited="true"/>
       </chunked>
     </packet>
 
+    <packet family="Players" action="Update">
+      <comment>Player has appeared in nearby view</comment>
+      <field name="nearby" type="NearbyInfo"/>
+    </packet>
+
     <packet family="Npc" action="Set">
+      <comment>Main NPC update messages</comment>
+      <chunked>
+        <array name="positions" type="NpcUpdatePosition"/>
+        <break/>
+        <array name="attacks" type="NpcUpdateAttack"/>
+        <break/>
+        <array name="chats" type="NpcUpdateChat"/>
+        <break/>
+      </chunked>
     </packet>
 
     <packet family="Chat" action="Private">
@@ -496,6 +718,16 @@
       <field name="message" type="string"/>
     </packet>
 
+    <packet family="Npc" action="Update">
+      <comment>NPCs appearing in nearby view</comment>
+      <field name="npc" type="NpcMapInfo"/>
+    </packet>
+
+    <packet family="Npc" action="Spawn">
+      <comment>NPCs spawning in nearby view</comment>
+      <field name="npc" type="NpcMapInfo"/>
+    </packet>
+
     <packet family="Range" action="Result">
       <comment>Nearby players or npcs appearing</comment>
       <field name="nearby" type="NearbyInfo"/>
@@ -503,6 +735,19 @@
 
     <packet family="Refresh" action="Result">
       <field name="nearby" type="NearbyInfo"/>
+    </packet>
+
+    <packet family="Attack" action="Set">
+      <comment>Nearby player attacked</comment>
+      <field name="player_id" type="short"/>
+      <field name="direction" type="Direction"/>
+      <field name="unk" type="char"/>
+    </packet>
+
+    <packet family="Direction" action="Set">
+      <comment>Nearby player changed direction</comment>
+      <field name="player_id" type="short"/>
+      <field name="direction" type="Direction"/>
     </packet>
 
     <packet family="Attack" action="Drop">
@@ -523,5 +768,53 @@
       <field name="amount" type="int"/>
       <field name="drop_index" type="short"/>
       <field name="coords" type="Coords"/>
+    </packet>
+
+    <packet family="Attack" action="Close">
+      <comment>Nearby NPC killed by player</comment>
+      <field name="killer_direction" type="Direction"/>
+      <field name="killer_player_id" type="short"/>
+      <field name="npc_index" type="short"/>
+      <field name="unk1" type="short"/>
+      <field name="damage" type="int"/>
+      <field name="unk2" type="char"/>
+    </packet>
+
+    <packet family="Attack" action="Hit">
+      <comment>Nearby NPC hit by player</comment>
+      <field name="attacker_direction" type="Direction"/>
+      <field name="attacker_player_id" type="short"/>
+      <field name="npc_index" type="short"/>
+      <field name="hp_percentage" type="char"/>
+      <field name="damage" type="int"/>
+      <field name="unk" type="char"/>
+    </packet>
+
+    <packet family="Warp" action="Confirm">
+      <comment>Requesting player to warp to another map</comment>
+      <field name="warp_type" type="WarpType"/>
+      <field name="map_id" type="short"/>
+      <switch field="warp_type">
+          <case value="Switch">
+              <array name="map_rid" type="short" length="2"/>
+              <field name="map_file_size" type="three"/>
+          </case>
+      </switch>
+      <field name="session_id" type="short"/>
+    </packet>
+
+    <packet family="Warp" action="Update">
+      <comment>Entering a new map</comment>
+      <field name="warp_type" type="WarpType"/>
+      <field name="map_id" type="short"/>
+      <field name="channel" type="char"/>
+      <field name="unk1" type="char"/>
+      <field name="unk2" type="char"/>
+      <field name="unk3" type="char"/>
+      <field name="unk4" type="char"/>
+      <field name="unk5" type="char"/>
+      <field name="unk6" type="char"/>
+      <field name="warp_animation" type="WarpAnimation"/>
+      <field name="nearby" type="NearbyInfo"/>
     </packet>
 </protocol>

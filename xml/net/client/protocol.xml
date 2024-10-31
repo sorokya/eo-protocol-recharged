@@ -58,6 +58,17 @@
       <field name="emote" type="char"/>
     </packet>
 
+    <packet family="Gather" action="Start">
+      <comment>Start gathering</comment>
+      <field name="gather_index" type="char"/>
+    </packet>
+
+    <packet family="Gather" action="Confirm">
+      <comment>Collect gathering item</comment>
+      <array name="session_id" type="short" length="2"/>
+      <field name="gather_index" type="char"/>
+    </packet>
+
     <packet family="Gift" action="Open">
       <comment>Opening gift inbox</comment>
       <dummy type="char">0</dummy>
@@ -158,13 +169,26 @@
     </packet>
 
     <!-- TODO: Confirm packet -->
+    <enum name="RangeRequestType" type="char">
+      <value name="Both">1</value>
+      <value name="NPC">3</value>
+    </enum>
+
     <packet family="Range" action="Request">
       <comment>Requesting info about nearby players and NPCs</comment>
-      <chunked>
-        <array name="player_ids" type="short"/>
-        <break/>
-        <array name="npc_indexes" type="char"/>
-      </chunked>
+      <field name="request_type" type="RangeRequestType"/>
+      <switch field="request_type">
+        <case value="Both">
+          <chunked>
+            <array name="player_ids" type="short"/>
+            <break />
+            <array name="npc_indexes" type="short"/>
+          </chunked>
+        </case>
+        <case value="NPC">
+            <array name="npc_indexes" type="short"/>
+        </case>
+      </switch>
     </packet>
 
     <packet family="Rest" action="Request">
@@ -204,5 +228,11 @@
     <packet family="Shop" action="Sell">
       <comment>Selling an item</comment>
       <field name="item" type="Item"/>
+    </packet>
+
+    <packet family="Warp" action="Confirm">
+      <comment>Confirming warp request</comment>
+      <field name="map_id" type="short"/>
+      <field name="session_id" type="short"/>
     </packet>
 </protocol>

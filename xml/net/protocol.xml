@@ -24,6 +24,7 @@
         <value name="Emote">21</value>
         <value name="Chat">22</value>
         <value name="Global">23</value>
+        <value name="Admin">24</value>
         <value name="Door">27</value>
         <value name="NpcRange">28</value>
         <value name="Warp">29</value>
@@ -58,7 +59,7 @@
         <value name="Quest">61</value>
         <value name="Event">62</value>
         <value name="Gift">63</value>
-        <value name="Captcha">249</value>
+        <value name="Captcha">240</value>
         <value name="Init">255</value>
     </enum>
 
@@ -98,10 +99,11 @@
         <value name="Group">32</value>
         <value name="Private">33</value>
         <value name="Public">35</value>
-        <value name="Global">38</value>
         <value name="Self">39</value>
         <value name="Target">40</value>
         <value name="Area">41</value>
+        <value name="Admin">43</value>
+        <value name="Global">45</value>
         <value name="Emote">46</value>
         <value name="Config">230</value>
         <value name="Syn1">241</value>
@@ -154,6 +156,19 @@
         <field name="aura" type="char"/>
         <field name="amount" type="int"/>
     </struct>
+
+    <struct name="ThreeItem">
+        <comment>An item reference with a 3-byte amount</comment>
+        <field name="id" type="short"/>
+        <field name="power" type="char"/>
+        <field name="accuracy" type="char"/>
+        <field name="dexterity" type="char"/>
+        <field name="defense" type="char"/>
+        <field name="vitality" type="char"/>
+        <field name="aura" type="char"/>
+        <field name="amount" type="three"/>
+    </struct>
+
 
     <struct name="Spell">
         <comment>A spell known by the player</comment>
