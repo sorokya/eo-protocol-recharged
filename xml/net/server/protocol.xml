@@ -433,6 +433,54 @@
       <field name="encrpted_captcha" type="string"/>
     </packet>
 
+    <packet family="Captcha" action="Close">
+      <comment>Captcha closed</comment>
+      <field name="total_experience" type="five"/>
+    </packet>
+
+    <enum name="DialogMessageId" type="char">
+      <value name="Welcome">1</value>
+      <value name="Warning">2</value>
+    </enum>
+
+    <packet family="Dialog" action="Get">
+      <comment>Shows a message box</comment>
+      <field name="message_id" type="DialogMessageId"/>
+    </packet>
+
+    <packet family="Dialog" action="Self">
+      <comment>#boost command</comment>
+      <field name="max_boost_level" type="char"/>
+    </packet>
+
+    <enum name="AdminMessageType" type="char">
+        <comment>Type of message sent to admins via the Help menu</comment>
+        <value name="Message">1</value>
+        <value name="Report">2</value>
+    </enum>
+
+    <packet family="Dialog" action="Confirm">
+      <comment>Incoming admin message</comment>
+        <chunked>
+            <field name="message_type" type="AdminMessageType"/>
+            <break/>
+            <switch field="message_type">
+                <case value="Message">
+                    <field name="player_name" type="string"/>
+                    <break/>
+                    <field name="message" type="string"/>
+                </case>
+                <case value="Report">
+                    <field name="player_name" type="string"/>
+                    <break/>
+                    <field name="message" type="string"/>
+                    <break/>
+                    <field name="reportee_name" type="string"/>
+                </case>
+            </switch>
+        </chunked>
+    </packet>
+
     <struct name="GatherSpot">
       <field name="index" type="char"/>
       <field name="amount" type="char"/>
@@ -471,8 +519,7 @@
       <field name="aura" type="char"/>
       <field name="sfx_id" type="char"/>
       <field name="weight" type="Weight"/>
-      <field name="experience" type="int"/>
-      <field name="experience_padding" type="byte"/> <!-- Just doing this so I don't have to implement five byte numbers yet.. -->
+      <field name="experience" type="five"/>
     </packet>
 
     <packet family="Gift" action="Emote">
@@ -695,8 +742,7 @@
                 <field name="guild_tag" type="string" length="3"/>
                 <field name="admin_level" type="AdminLevel"/>
                 <field name="level" type="short"/>
-                <field name="experience" type="int"/>
-                <field name="experience_padding" type="byte"/> <!-- Just doing this so I don't have to implement five byte numbers yet.. -->
+                <field name="experience" type="five"/>
                 <field name="tnl" type="int"/>
                 <field name="stats" type="CharacterStatsPlay"/>
                 <field name="unk1" type="short"/>
