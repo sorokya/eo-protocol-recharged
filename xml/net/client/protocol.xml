@@ -239,9 +239,15 @@
         <dummy type="string">k</dummy>
     </packet>
 
+    <enum name="ShopOpenFrom" type="char">
+      <value name="NPC">0</value>
+      <value name="Quest">1</value>
+    </enum>
+
     <packet family="Shop" action="Open">
       <comment>Talking to a shop NPC</comment>
       <field name="npc_index" type="short"/>
+      <field name="from" type="ShopOpenFrom"/>
     </packet>
 
     <packet family="Shop" action="Sell">
