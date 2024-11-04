@@ -224,7 +224,7 @@
 
     <packet family="Refresh" action="Request">
       <comment>Requesting refresh</comment>
-      <break />
+      <dummy type="byte">255</dummy>
     </packet>
 
     <packet family="Security" action="Confirm">
