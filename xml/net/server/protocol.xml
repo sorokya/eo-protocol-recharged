@@ -562,7 +562,7 @@
       <field name="coords" type="Coords"/>
     </packet>
 
-    <packet family="Music" action="Global">
+    <packet family="Music" action="Play">
       <comment>Nearby player playing an instrument</comment>
       <field name="player_id" type="short"/>
       <field name="direction" type="Direction"/>
