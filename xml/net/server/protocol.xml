@@ -422,8 +422,15 @@
     </packet>
 
     <packet family="Captcha" action="Open">
+      <comment>Captcha opened</comment>
       <array name="captcha_id" type="short" length="2"/>
       <field name="encrypted_data" type="blob" />
+    </packet>
+
+    <packet family="Captcha" action="Update">
+      <comment>Captcha updated</comment>
+      <field name="captcha_id" type="short"/>
+      <field name="encrpted_captcha" type="string"/>
     </packet>
 
     <struct name="GatherSpot">
