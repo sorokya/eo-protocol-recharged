@@ -37,18 +37,14 @@
         <value name="ChairDownRight">5</value>
         <value name="ChairUpLeft">6</value>
         <value name="ChairAll">7</value>
-        <!-- Used internally in the official server -->
         <value name="Reserved8">8</value>
         <value name="Chest">9</value>
-        <!-- Used internally in the official server -->
         <value name="Reserved10">10</value>
-        <!-- Used internally in the official server -->
         <value name="Reserved11">11</value>
-        <!-- Used internally in the official server -->
         <value name="Reserved12">12</value>
         <value name="Reserved13">13</value>
-        <value name="Reserved14">14</value>
-        <value name="Reserved15">15</value>
+        <value name="GatherBlock">14</value>
+        <value name="Gather">15</value>
         <value name="BankVault">16</value>
         <value name="NpcBoundary">17</value>
         <value name="Edge">18</value>
@@ -62,15 +58,22 @@
         <value name="Board7">26</value>
         <value name="Board8">27</value>
         <value name="Jukebox">28</value>
-        <value name="Jump">29</value>
+        <value name="Reserved29">29</value>
         <value name="Water">30</value>
-        <!-- "Deep Water" according to vult-r. No behavior in the official client. -->
         <value name="Reserved31">31</value>
         <value name="Arena">32</value>
         <value name="AmbientSource">33</value>
-        <value name="TimedSpikes">34</value>
-        <value name="Spikes">35</value>
-        <value name="HiddenSpikes">36</value>
+        <value name="AmbientSource2">34</value>
+        <value name="AmbientSource3">35</value>
+        <value name="TimedSpikes">36</value>
+        <value name="Spikes">37</value>
+        <value name="HiddenSpikes">38</value>
+        <value name="FishingDown">61</value>
+        <value name="FishingLeft">62</value>
+        <value name="FishingUp">63</value>
+        <value name="FishingRight">64</value>
+        <value name="Jump">81</value>
+        <value name="Reserved83">83</value>
     </enum>
 
     <struct name="MapNpc">
@@ -98,18 +101,25 @@
         <field name="amount" type="three"/>
     </struct>
 
+    <enum name="MapGatherType" type="char">
+      <value name="Collect">0</value>
+      <value name="Harvest">1</value>
+      <value name="Mine">3</value>
+      <value name="SmallTree">5</value>
+      <value name="LargeTree">6</value>
+    </enum>
+
     <struct name="MapGather">
         <comment>Gather spawn EMF entity</comment>
         <field name="coords" type="Coords"/>
-        <field name="unk1" type="char"/>
-        <field name="unk2" type="char"/>
+        <field name="gather_type" type="MapGatherType"/>
+        <field name="hit_count" type="char"/>
         <field name="unk3" type="char"/>
         <field name="unk4" type="char"/>
         <field name="unk5" type="char"/>
         <field name="unk6" type="char"/>
         <field name="unk7" type="char"/>
-        <field name="unk8" type="char"/>
-        <field name="unk9" type="char"/>
+        <field name="graphic_id" type="short"/>
         <field name="item_id" type="short"/>
         <field name="spawn_time" type="short"/>
         <field name="unk10" type="char"/>

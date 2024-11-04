@@ -16,7 +16,7 @@
       <field name="captcha_id" type="short"/>
     </packet>
 
-    <packet family="Captcha" action="Result">
+    <packet family="Captcha" action="Confirm">
       <comment>Submitting a captcha</comment>
       <field name="captcha_id" type="short"/>
       <field name="captcha" type="string"/>
@@ -34,7 +34,7 @@
       <field name="channel_id" type="char"/>
     </packet>
 
-    <packet family="Chat" action="Public">
+    <packet family="Chat" action="Set">
       <comment>Sending a public chat message</comment>
       <field name="message" type="string"/>
     </packet>
@@ -152,6 +152,25 @@
       <field name="direction" type="Direction"/>
       <field name="timestamp" type="three"/>
       <field name="coords" type="Coords"/>
+    </packet>
+
+    <packet family="Music" action="Do">
+      <comment>Playing an instrument</comment>
+      <field name="instrument_id" type="char"/>
+      <field name="note" type="char"/>
+    </packet>
+
+    <packet family="Paperdoll" action="Add">
+      <comment>Equip an item</comment>
+      <field name="item_id" type="short"/>
+      <field name="power" type="char"/>
+      <field name="accuracy" type="char"/>
+      <field name="dexterity" type="char"/>
+      <field name="defense" type="char"/>
+      <field name="vitality" type="char"/>
+      <field name="aura" type="char"/>
+      <field name="unk1" type="char"/>
+      <field name="unk2" type="char"/>
     </packet>
 
     <packet family="Play" action="Play">

@@ -421,6 +421,11 @@
         </switch>
     </packet>
 
+    <packet family="Captcha" action="Open">
+      <array name="captcha_id" type="short" length="2"/>
+      <field name="encrypted_data" type="blob" />
+    </packet>
+
     <struct name="GatherSpot">
       <field name="index" type="char"/>
       <field name="amount" type="char"/>
@@ -441,6 +446,11 @@
       <comment>Gather spot amount updating</comment>
       <field name="gather_index" type="char"/>
       <field name="amount" type="char"/>
+    </packet>
+
+    <packet family="Gather" action="Hit">
+      <comment>Other play gathered item before you</comment>
+      <field name="unk" type="short"/>
     </packet>
 
     <packet family="Gather" action="Pickup">
@@ -552,6 +562,15 @@
       <field name="coords" type="Coords"/>
     </packet>
 
+    <packet family="Music" action="Global">
+      <comment>Nearby player playing an instrument</comment>
+      <field name="player_id" type="short"/>
+      <field name="direction" type="Direction"/>
+      <field name="unk" type="char"/>
+      <field name="instrument_id" type="char"/>
+      <field name="note" type="char"/>
+    </packet>
+
     <packet family="Security" action="Set">
         <comment>Ping request</comment>
         <field name="seq1" type="short" />
@@ -564,6 +583,32 @@
             If they don't match a blank popup is spammed every ping (after 30 pings)
         </comment>
         <field name="anti_emulation_validation_server" type="int"/>
+    </packet>
+
+    <packet family="Paperdoll" action="Swap">
+      <comment>Player changed paperdoll</comment>
+      <field name="player_id" type="short"/>
+      <field name="unk1" type="char"/>
+      <field name="unk2" type="char"/>
+      <field name="boots" type="short"/>
+      <field name="armor" type="short"/>
+      <field name="hat" type="short"/>
+      <field name="weapon" type="short"/>
+      <field name="shield" type="short"/>
+      <field name="buddy_shoulder" type="short"/>
+      <field name="buddy_ground" type="short"/>
+      <field name="torch" type="short"/>
+      <field name="equipped_item" type="ThreeItem"/>
+      <field name="unk3" type="char"/>
+      <field name="unk4" type="char"/>
+      <field name="removed_item" type="ThreeItem"/>
+      <field name="hp" type="three"/>
+      <field name="max_hp" type="three"/>
+      <field name="tp" type="three"/>
+      <field name="max_tp" type="three"/>
+      <field name="base_stats" type="CharacterBaseStats"/>
+      <field name="secondary_secondary" type="CharacterSecondaryStats"/>
+      <field name="weight" type="short"/>
     </packet>
 
     <packet family="Play" action="Confirm">
@@ -748,6 +793,13 @@
       <comment>Nearby player changed direction</comment>
       <field name="player_id" type="short"/>
       <field name="direction" type="Direction"/>
+    </packet>
+
+    <packet family="Fishing" action="Hit">
+      <comment>Fishing update</comment>
+      <field name="unk1" type="char"/>
+      <field name="unk2" type="char"/>
+      <field name="unk3" type="char"/>
     </packet>
 
     <packet family="Attack" action="Drop">
