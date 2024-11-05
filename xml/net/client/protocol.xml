@@ -109,6 +109,11 @@
         <field name="hdid" type="string" length="hdid_length"/>
     </packet>
 
+    <packet family="Item" action="Drop">
+      <field name="item" type="ThreeItem"/>
+      <field name="coords" type="Coords"/>
+    </packet>
+
     <packet family="Item" action="Pickup">
       <comment>Picking up an item</comment>
       <field name="item_index" type="short"/>
@@ -210,7 +215,7 @@
       </switch>
     </packet>
 
-    <packet family="Rest" action="Request">
+    <packet family="Rest" action="Set">
       <comment>Sit/stand</comment>
       <field name="sit_action" type="SitAction"/>
       <switch field="sit_action">
@@ -253,6 +258,7 @@
     <packet family="Shop" action="Sell">
       <comment>Selling an item</comment>
       <field name="item" type="Item"/>
+      <field name="shop_id" type="int"/>
     </packet>
 
     <packet family="Warp" action="Confirm">

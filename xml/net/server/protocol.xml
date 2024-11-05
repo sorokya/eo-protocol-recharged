@@ -352,6 +352,29 @@
         <field name="message" type="string" length="message_length"/>
     </struct>
 
+    <packet family="Item" action="Drop">
+      <comment>Reply to dropping an item</comment>
+      <field name="item" type="ThreeItem"/>
+      <field name="remaining" type="int"/>
+      <field name="item_index" type="short"/>
+      <field name="coords" type="Coords"/>
+      <field name="weight" type="Weight"/>
+    </packet>
+
+    <packet family="Item" action="Pickup">
+      <comment>Reply to picking up an item</comment>
+      <field name="item_id" type="short"/>
+      <field name="power" type="char"/>
+      <field name="accuracy" type="char"/>
+      <field name="dexterity" type="char"/>
+      <field name="defense" type="char"/>
+      <field name="vitality" type="char"/>
+      <field name="aura" type="char"/>
+      <field name="item_index" type="short"/>
+      <field name="amount" type="three"/>
+      <field name="weight" type="Weight"/>
+    </packet>
+
     <packet family="Init" action="Init">
         <comment>
             Result to connection initialization and requests for unencrypted data.
@@ -625,6 +648,46 @@
       <field name="note" type="char"/>
     </packet>
 
+    <struct name="ShopTrade">
+      <field name="item_id" type="short"/>
+      <field name="sell_price" type="three"/>
+      <field name="buy_price" type="three"/>
+      <field name="max_amount" type="char"/>
+    </struct>
+
+    <struct name="ShopCraftIngredient">
+      <field name="item_id" type="short"/>
+      <field name="amount" type="three"/>
+    </struct>
+
+    <struct name="ShopCraft">
+      <field name="item_id" type="short"/>
+      <field name="unk1" type="char"/>
+      <field name="cost" type="three"/>
+      <field name="unk2" type="three"/>
+      <array name="ingredients" type="ShopCraftIngredient" length="4"/>
+    </struct>
+
+    <packet family="Shop" action="Open">
+      <comment>Shop opened</comment>
+      <chunked>
+        <field name="shop_id" type="short"/>
+        <field name="unk" type="char"/>
+        <field name="name" type="string"/>
+        <break/>
+        <array name="trades" type="ShopTrade"/>
+        <break/>
+        <array name="crafts" type="ShopCraft"/>
+      </chunked>
+    </packet>
+
+    <packet family="Shop" action="Sell">
+      <comment>Reply from selling an item</comment>
+      <field name="item" type="Item"/>
+      <field name="total_eons" type="int"/>
+      <field name="weight" type="Weight"/>
+    </packet>
+
     <packet family="Security" action="Set">
         <comment>Ping request</comment>
         <field name="seq1" type="short" />
@@ -835,6 +898,20 @@
       <field name="nearby" type="NearbyInfo"/>
     </packet>
 
+    <packet family="Rest" action="Close">
+      <comment>Nearby player standing</comment>
+      <field name="player_id" type="short"/>
+      <field name="coords" type="Coords"/>
+    </packet>
+
+    <packet family="Rest" action="Result">
+      <comment>Nearby player sitting</comment>
+      <field name="player_id" type="short"/>
+      <field name="coords" type="Coords"/>
+      <field name="direction" type="Direction"/>
+      <field name="unk" type="char"/>
+    </packet>
+
     <packet family="Attack" action="Set">
       <comment>Nearby player attacked</comment>
       <field name="player_id" type="short"/>
@@ -853,6 +930,21 @@
       <field name="unk1" type="char"/>
       <field name="unk2" type="char"/>
       <field name="unk3" type="char"/>
+    </packet>
+
+    <packet family="Fishing" action="Result">
+      <comment>Fishing result</comment>
+      <field name="item" type="ThreeItem"/>
+      <field name="current_weight" type="short"/>
+      <field name="unk" type="char"/>
+    </packet>
+
+    <packet family="Fishing" action="Open">
+      <comment>Nearby player started fishing</comment>
+      <field name="player_id" type="short"/>
+      <field name="coords" type="Coords"/>
+      <field name="direction" type="Direction"/>
+      <field name="unk" type="char"/>
     </packet>
 
     <packet family="Attack" action="Drop">
