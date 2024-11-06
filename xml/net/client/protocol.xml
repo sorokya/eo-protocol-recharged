@@ -109,7 +109,13 @@
         <field name="hdid" type="string" length="hdid_length"/>
     </packet>
 
+    <packet family="Item" action="Do">
+      <comment>Using an item</comment>
+      <field name="item_id" type="short"/>
+    </packet>
+
     <packet family="Item" action="Drop">
+      <comment>Dropping an item</comment>
       <field name="item" type="ThreeItem"/>
       <field name="coords" type="Coords"/>
     </packet>
@@ -142,14 +148,16 @@
       </chunked>
     </packet>
 
-    <!-- TODO: Confirm there is a break byte here -->
     <packet family="Magic" action="Request">
-      <comment>Casting spell</comment>
-      <chunked>
-        <field name="spell_id" type="short"/>
-        <break/>
-        <field name="timestamp" type="three"/>
-      </chunked>
+      <comment>Begin spell chanting</comment>
+      <field name="spell_id" type="short"/>
+      <field name="timestamp" type="three"/>
+    </packet>
+
+    <packet family="Magic" action="Self">
+      <comment>Begin spell chanting</comment>
+      <field name="spell_id" type="short"/>
+      <field name="timestamp" type="three"/>
     </packet>
 
     <packet family="Move" action="Set">
