@@ -17,13 +17,10 @@
         <value name="Currency">2</value>
         <value name="Heal">3</value>
         <value name="Teleport">4</value>
-        <!-- "transformation" in the official pub editor -->
-        <value name="Reserved5">5</value>
+        <value name="Transformation">5</value>
         <value name="ExpReward">6</value>
-        <!-- "skill book" in the official pub editor -->
-        <value name="Reserved7">7</value>
-        <!-- "visual document" in the official pub editor -->
-        <value name="Reserved8">8</value>
+        <value name="SkillBook">7</value>
+        <value name="StatReset">8</value>
         <value name="Key">9</value>
         <value name="Weapon">10</value>
         <value name="Shield">11</value>
@@ -37,18 +34,22 @@
         <value name="Ring">19</value>
         <value name="Armlet">20</value>
         <value name="Bracer">21</value>
-        <value name="Alcohol">22</value>
-        <value name="EffectPotion">23</value>
-        <value name="HairDye">24</value>
-        <value name="CureCurse">25</value>
-        <!-- "buff*" in the official pub editor -->
-        <value name="Reserved26">26</value>
-        <!-- "debuff*" in the official pub editor -->
-        <value name="Reserved27">27</value>
-        <!-- "title" in the official pub editor -->
-        <value name="Reserved28">28</value>
-        <!-- "hairtool" in the official pub editor -->
-        <value name="Reserved29">29</value>
+        <value name="CosmeticArmor">22</value>
+        <value name="CosmeticHat">23</value>
+        <value name="CosmeticBack">24</value>
+        <value name="CosmeticBuddyShoulder">25</value>
+        <value name="CosmeticBuddyGround">26</value>
+        <value name="CosmeticTorch">27</value>
+        <value name="Alcohol">28</value>
+        <value name="EffectPotion">29</value>
+        <value name="HairDye">30</value>
+        <value name="Shaver">31</value>
+        <value name="CureCurse">32</value>
+        <value name="TitleCertificate">33</value>
+        <value name="VisualDocument">34</value>
+        <value name="Reserved35">35</value>
+        <value name="Ticket">36</value>
+        <value name="Firework">37</value>
     </enum>
 
     <enum name="ItemSubtype" type="char">

@@ -201,6 +201,13 @@
       <field name="base" type="CharacterBaseStats"/>
     </struct>
 
+    <struct name="CharacterStatsEquipmentChange">
+      <field name="max_hp" type="three"/>
+      <field name="max_tp" type="three"/>
+      <field name="base" type="CharacterBaseStats"/>
+      <field name="secondary" type="CharacterSecondaryStats"/>
+    </struct>
+
     <struct name="CharacterBaseStats">
       <field name="power" type="short"/>
       <field name="defense" type="short"/>
@@ -352,6 +359,20 @@
         <field name="message" type="string" length="message_length"/>
     </struct>
 
+    <packet family="Cast" action="Self">
+      <comment>Nearby player casting spell on their self</comment>
+      <field name="player_id" type="short"/>
+      <field name="spell_id" type="short"/>
+      <field name="spell_heal_hp" type="three"/>
+      <field name="hp_percentage" type="char"/>
+      <field name="hp" type="three" optional="true">
+          <comment>The official client reads this if the packet is larger than 12 bytes</comment>
+      </field>
+      <field name="tp" type="three" optional="true">
+          <comment>The official client reads this if the packet is larger than 12 bytes</comment>
+      </field>
+    </packet>
+
     <packet family="Item" action="Drop">
       <comment>Reply to dropping an item</comment>
       <field name="item" type="ThreeItem"/>
@@ -360,6 +381,15 @@
       <field name="coords" type="Coords"/>
       <field name="weight" type="Weight"/>
     </packet>
+
+    <packet family="Item" action="Junk">
+      <comment>Reply to junking an item</comment>
+      <field name="item" type="ThreeItem"/>
+      <field name="remaining" type="int"/>
+      <field name="item_index" type="short"/>
+      <field name="weight" type="Weight"/>
+    </packet>
+
 
     <packet family="Item" action="Pickup">
       <comment>Reply to picking up an item</comment>
@@ -373,6 +403,47 @@
       <field name="item_index" type="short"/>
       <field name="amount" type="three"/>
       <field name="weight" type="Weight"/>
+    </packet>
+
+    <packet family="Item" action="Result">
+      <field name="item_type" type="ItemType"/>
+      <field name="used_item" type="Item"/>
+      <field name="current_weight" type="short"/>
+      <switch field="item_type">
+        <case value="Heal">
+            <field name="hp_gain" type="short"/>
+            <field name="tp_gain" type="short"/>
+            <field name="sp_gain" type="short"/>
+            <field name="hp" type="three"/>
+            <field name="tp" type="three"/>
+            <field name="sp" type="short"/>
+        </case>
+        <case value="TitleCertificate">
+          <!-- 1 == title, 2 == message? "Your message has been delivered!" in ida -->
+          <field name="unk" type="char"/>
+        </case>
+        <case value="Transformation">
+          <field name="skin" type="char"/>
+        </case>
+        <case value="SkillBook">
+          <field name="skill_id" type="short"/>
+        </case>
+        <case value="CureCurse">
+          <field name="stats" type="CharacterStatsEquipmentChange"/>
+        </case>
+        <case value="HairDye">
+          <field name="hair_color" type="char"/>
+        </case>
+        <case value="EffectPotion">
+          <field name="effect_id" type="short"/>
+        </case>
+        <case value="ExpReward">
+          <field name="total_experience" type="five"/>
+        </case>
+          <!-- TODO: Test a scroll.. the client is doing something here
+            <case value="Teleport"></case>
+          -->
+      </switch>
     </packet>
 
     <packet family="Init" action="Init">
@@ -509,6 +580,13 @@
       <field name="amount" type="char"/>
     </struct>
 
+    <packet family="GameBar" action="Set">
+      <comment>HP/TP update</comment>
+      <field name="hp" type="three"/>
+      <field name="tp" type="three"/>
+      <field type="short">0</field>
+    </packet>
+
     <packet family="Gather" action="Get">
       <comment>Nearby gather spots appearing</comment>
       <array name="spots" type="GatherSpot"/>
@@ -616,6 +694,12 @@
                 </case>
             </switch>
         </chunked>
+    </packet>
+
+    <packet family="Magic" action="Request">
+      <comment>Nearby player started casting a spell</comment>
+      <field name="player_id" type="short"/>
+      <field name="skill_id" type="short"/>
     </packet>
 
     <packet family="Move" action="Result">
