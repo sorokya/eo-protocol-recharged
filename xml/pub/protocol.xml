@@ -43,13 +43,16 @@
         <value name="Alcohol">28</value>
         <value name="EffectPotion">29</value>
         <value name="HairDye">30</value>
-        <value name="Shaver">31</value>
+        <value name="HairTool">31</value>
         <value name="CureCurse">32</value>
         <value name="TitleCertificate">33</value>
         <value name="VisualDocument">34</value>
-        <value name="Reserved35">35</value>
-        <value name="Ticket">36</value>
-        <value name="Firework">37</value>
+        <value name="AudioDocument">35</value>
+        <value name="TransportTicket">36</value>
+        <value name="Fireworks">37</value>
+        <value name="Explosive">38</value>
+        <value name="Buff">39</value>
+        <value name="Debuff">40</value>
     </enum>
 
     <enum name="ItemSubtype" type="char">
