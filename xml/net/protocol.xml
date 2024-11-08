@@ -34,8 +34,8 @@
         <value name="Channel">32</value>
         <value name="Npc">33</value>
         <value name="PlayerRange">34</value>
-        <value name="Players">36</value>
-        <value name="Player">37</value>
+        <value name="Player">36</value>
+        <value name="Players">37</value>
         <value name="Group">38</value>
         <value name="Paperdoll">39</value>
         <value name="Trade">40</value>

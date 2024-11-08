@@ -274,4 +274,10 @@
       <field name="map_id" type="short"/>
       <field name="session_id" type="short"/>
     </packet>
+
+    <packet family="Warp" action="Start">
+      <comment>Request to download a copy of the map</comment>
+      <field name="map_id" type="short"/>
+      <field name="session_id" type="short"/>
+    </packet>
 </protocol>

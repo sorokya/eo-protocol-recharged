@@ -322,6 +322,18 @@
         <field name="coords" type="Coords"/>
     </struct>
 
+    <struct name="QuestItemMapInfo">
+      <comment>Information about a nearby quest item on the ground</comment>
+      <field name="item_id" type="short"/>
+      <field name="coords" type="Coords"/>
+    </struct>
+
+    <struct name="GatherMapInfo">
+      <comment>Information about nearby gatherable items</comment>
+      <field name="index" type="char"/>
+      <field name="amount" type="char"/>
+    </struct>
+
     <struct name="NearbyInfo">
         <comment>Information about nearby entities</comment>
         <length name="characters_count" type="char"/>
@@ -331,6 +343,10 @@
             <array name="npcs" type="NpcMapInfo"/>
             <break/>
             <array name="items" type="ItemMapInfo"/>
+            <break/>
+            <array name="gathers" type="GatherMapInfo"/>
+            <break/>
+            <array name="quest_items" type="QuestItemMapInfo"/>
         </chunked>
     </struct>
 
@@ -419,7 +435,7 @@
             <field name="sp" type="short"/>
         </case>
         <case value="TitleCertificate">
-          <!-- 1 == title, 2 == message? "Your message has been delivered!" in ida -->
+          <!-- 1 == title, 2 == announcement "Your message has been delivered!" in ida -->
           <field name="unk" type="char"/>
         </case>
         <case value="Transformation">
@@ -575,10 +591,27 @@
         </chunked>
     </packet>
 
-    <struct name="GatherSpot">
-      <field name="index" type="char"/>
-      <field name="amount" type="char"/>
-    </struct>
+    <packet family="GameBar" action="List">
+      <comment>Player leveled up</comment>
+      <field name="level" type="short"/>
+      <field name="experience" type="five"/>
+      <field name="stat_points" type="short"/>
+      <field name="skill_points" type="short"/>
+      <field name="max_hp" type="three"/>
+      <field name="max_tp" type="three"/>
+      <field name="max_sp" type="short"/>
+      <field name="hp" type="three"/>
+      <field name="tp" type="three"/>
+      <field name="sp" type="short"/>
+      <field name="unk1" type="short"/>
+      <field name="unk2" type="short"/>
+      <field name="unk3" type="short"/>
+      <field name="unk4" type="short"/>
+      <field name="unk5" type="short"/>
+      <field name="unk6" type="short"/>
+      <field name="unk7" type="short"/>
+      <field name="secondary_stats" type="CharacterSecondaryStats"/>
+    </packet>
 
     <packet family="GameBar" action="Set">
       <comment>HP/TP update</comment>
@@ -588,8 +621,8 @@
     </packet>
 
     <packet family="Gather" action="Get">
-      <comment>Nearby gather spots appearing</comment>
-      <array name="spots" type="GatherSpot"/>
+      <comment>Nearby gather spots updating</comment>
+      <array name="gathers" type="GatherMapInfo"/>
     </packet>
 
     <packet family="Gather" action="Set">
@@ -925,9 +958,15 @@
       </chunked>
     </packet>
 
-    <packet family="Players" action="Update">
+    <packet family="Player" action="Update">
       <comment>Player has appeared in nearby view</comment>
       <field name="nearby" type="NearbyInfo"/>
+    </packet>
+
+    <packet family="Player" action="Delete">
+      <comment>Player removed from nearby view</comment>
+      <field name="player_id" type="short"/>
+      <field name="warp_animation" type="WarpAnimation"/>
     </packet>
 
     <packet family="Npc" action="Set">
