@@ -964,6 +964,11 @@
     </packet>
 
     <packet family="Player" action="Delete">
+      <comment>Nearby player logged out</comment>
+      <field name="player_id" type="short"/>
+    </packet>
+
+    <packet family="Players" action="Delete">
       <comment>Player removed from nearby view</comment>
       <field name="player_id" type="short"/>
       <field name="warp_animation" type="WarpAnimation"/>
