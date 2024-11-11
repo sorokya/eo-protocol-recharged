@@ -819,6 +819,17 @@
         <field name="anti_emulation_validation_server" type="int"/>
     </packet>
 
+    <packet family="System" action="Do">
+      <comment>Quest popup box</comment>
+      <chunked>
+        <field name="title" type="string"/>
+        <break/>
+        <field name="message" type="string"/>
+        <break/>
+        <field name="graphic_id" type="short"/>
+      </chunked>
+    </packet>
+
     <packet family="Paperdoll" action="Swap">
       <comment>Player changed paperdoll</comment>
       <field name="player_id" type="short"/>
