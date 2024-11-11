@@ -200,6 +200,11 @@
         </field>
     </packet>
 
+    <packet family="Player" action="Request">
+      <comment>Requesting online player list</comment>
+      <dummy type="byte">255</dummy>
+    </packet>
+
     <!-- TODO: Confirm packet -->
     <enum name="RangeRequestType" type="char">
       <value name="Both">1</value>
