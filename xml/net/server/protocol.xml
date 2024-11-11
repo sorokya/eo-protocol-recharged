@@ -686,10 +686,10 @@
 
     <packet family="Login" action="Confirm">
         <comment>Successful login result</comment>
-        <chunked>
             <field name="result_code" type="LoginResult"/>
             <switch field="result_code">
                 <case value="Ok">
+                  <chunked>
                     <field name="max_skin" type="short"/>
                     <field name="max_hairstyle" type="short"/>
                     <field name="max_name_length" type="char"/>
@@ -700,9 +700,9 @@
                     <field name="unk2" type="char"/>
                     <break />
                     <array name="characters" type="CharacterSelectionListEntry" delimited="true"/>
+                  </chunked>
                 </case>
             </switch>
-        </chunked>
     </packet>
 
     <packet family="Login" action="Result">
@@ -817,6 +817,17 @@
             If they don't match a blank popup is spammed every ping (after 30 pings)
         </comment>
         <field name="anti_emulation_validation_server" type="int"/>
+    </packet>
+
+    <packet family="System" action="Do">
+      <comment>Quest popup box</comment>
+      <chunked>
+        <field name="title" type="string"/>
+        <break/>
+        <field name="message" type="string"/>
+        <break/>
+        <field name="graphic_id" type="short"/>
+      </chunked>
     </packet>
 
     <packet family="Paperdoll" action="Swap">
