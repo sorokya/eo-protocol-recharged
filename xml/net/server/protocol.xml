@@ -56,6 +56,12 @@
       <value name="Ok">1</value>
     </enum>
 
+    <enum name="ExperienceDisplayMode" type="char">
+      <value name="Normal">0</value>
+      <value name="ShowReduced">1</value>
+      <value name="Reserved2">2</value>
+    </enum>
+
     <enum name="CharacterIcon" type="char">
         <comment>Icon displayed in paperdolls, books, and the online list</comment>
         <value name="Player">1</value>
@@ -901,6 +907,7 @@
             <field name="unk9" type="char"/>
             <field name="unk10" type="char"/>
             <field name="unk11" type="char"/>
+            <field name="experience_display_mode" type="ExperienceDisplayMode"/>
             <field name="unk12" type="short"/>
             <field name="unk13" type="short"/>
             <field name="unk14" type="short"/>
