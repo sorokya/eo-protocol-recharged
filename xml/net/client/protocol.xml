@@ -205,9 +205,9 @@
       <dummy type="byte">255</dummy>
     </packet>
 
-    <!-- TODO: Confirm packet -->
     <enum name="RangeRequestType" type="char">
       <value name="Both">1</value>
+      <value name="Player">2</value>
       <value name="NPC">3</value>
     </enum>
 
@@ -221,6 +221,9 @@
             <break />
             <array name="npc_indexes" type="short"/>
           </chunked>
+        </case>
+        <case value="Player">
+            <array name="player_ids" type="short"/>
         </case>
         <case value="NPC">
             <array name="npc_indexes" type="short"/>
@@ -255,6 +258,11 @@
     <packet family="Security" action="Syn1">
         <comment>Ping reply</comment>
         <dummy type="string">k</dummy>
+    </packet>
+
+    <packet family="System" action="Syn2">
+      <comment>System ping request</comment>
+      <field name="ping" type="short"/>
     </packet>
 
     <enum name="ShopOpenFrom" type="char">
