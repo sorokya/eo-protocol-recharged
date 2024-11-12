@@ -631,13 +631,21 @@
       <field type="short">0</field>
     </packet>
 
-    <packet family="GameBar" action="Time">
-      <comment>EXP/Boost update</comment>
+    <enum name="ExperienceUpdateType" type="char">
+      <value name="Hidden">0</value>
+      <value name="Shown">1</value>
+      <value name="Quest">2</value>
+      <value name="Event">3</value>
+      <value name="Game">4</value>
+  </enum>
+
+  <packet family="GameBar" action="Time">
+      <comment>Experience updated</comment>
       <field name="experience" type="five"/>
+      <field name="update_type" type="ExperienceUpdateType"/>
       <field name="boost" type="char"/>
-      <field name="unk1" type="char"/>
-      <field name="unk2" type="char"/>
-    </packet>
+      <field name="reduced_pct" type="char"/>
+  </packet>
 
     <packet family="Gather" action="Get">
       <comment>Nearby gather spots updating</comment>
