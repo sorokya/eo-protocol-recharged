@@ -294,11 +294,13 @@
             <break/>
             <field name="player_id" type="short"/>
             <field name="coords" type="Coords"/>
+            <field name="npc_id" type="short">
+              <comment>If set character will appear as this NPC</comment>
+            </field>
             <field name="unk1" type="short"/>
             <field name="unk2" type="short"/>
-            <field name="unk3" type="short"/>
             <field name="direction_sitting_hiding" type="char"/>
-            <field name="unk4" type="char"/>
+            <field name="unk3" type="char"/>
             <field name="level" type="short"/>
             <field name="unk5" type="char"/>
             <field name="gender_skin" type="char"/>
