@@ -1185,7 +1185,7 @@
 
     <packet family="System" action="Syn3">
       <comment>System pong response</comment>
-      <field name="unk1" type="char"/>
+      <dummy type="char">3</dummy>
     </packet>
 
     <packet family="Door" action="Open">
