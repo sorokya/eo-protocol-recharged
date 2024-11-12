@@ -105,6 +105,12 @@
       <value name="Admin">2</value>
     </enum>
 
+    <enum name="WarpTimeChangeType" type="char">
+        <comment>Defines the change type for warp time.</comment>
+        <value name="DayMode">0</value>
+        <value name="LightAdjustment">1</value>
+    </enum>
+
     <struct name="MapFile">
         <comment>A map file (EMF)</comment>
         <field name="content" type="blob"/>
@@ -398,6 +404,11 @@
       <field name="weight" type="Weight"/>
     </packet>
 
+    <packet family="Item" action="Delete">
+        <comment>Item disappeared from the ground</comment>
+        <field name="item_index" type="short"/>
+    </packet>
+
     <packet family="Item" action="Junk">
       <comment>Reply to junking an item</comment>
       <field name="item" type="ThreeItem"/>
@@ -620,6 +631,14 @@
       <field type="short">0</field>
     </packet>
 
+    <packet family="GameBar" action="Time">
+      <comment>EXP/Boost update</comment>
+      <field name="experience" type="five"/>
+      <field name="boost" type="char"/>
+      <field name="unk1" type="char"/>
+      <field name="unk2" type="char"/>
+    </packet>
+
     <packet family="Gather" action="Get">
       <comment>Nearby gather spots updating</comment>
       <array name="gathers" type="GatherMapInfo"/>
@@ -635,6 +654,7 @@
       <comment>Gather spot amount updating</comment>
       <field name="gather_index" type="char"/>
       <field name="amount" type="char"/>
+      <field name="unk1" type="char"/>
     </packet>
 
     <packet family="Gather" action="Hit">
@@ -1003,6 +1023,7 @@
         <field name="name" type="string"/>
         <break/>
         <field name="message" type="string"/>
+        <break/>
       </chunked>
     </packet>
  
@@ -1152,5 +1173,31 @@
       <field name="unk6" type="char"/>
       <field name="warp_animation" type="WarpAnimation"/>
       <field name="nearby" type="NearbyInfo"/>
+    </packet>
+
+    <packet family="System" action="Syn3">
+      <comment>System pong response</comment>
+      <field name="unk1" type="char"/>
+    </packet>
+
+    <packet family="Door" action="Open">
+        <comment>Nearby door opening</comment>
+        <field name="coords" type="Coords"/>
+        <field type="char">0</field>
+    </packet>
+
+    <packet family="Warp" action="Time">
+        <comment>Time of day change</comment>
+        <field name="change_type" type="WarpTimeChangeType"/>
+        <switch field="change_type">
+            <case value="DayMode">
+                <field name="daymode" type="char"/>
+            </case>
+            <case value="LightAdjustment">
+                <field name="background_light" type="char"/>
+                <field name="ambient_light" type="char"/>
+                <field name="player_light" type="char"/>
+            </case>
+        </switch>
     </packet>
 </protocol>
