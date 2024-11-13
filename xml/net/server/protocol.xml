@@ -341,7 +341,7 @@
             <field name="tp" type="three"/>
             <field name="max_tp" type="three"/>
             <field name="guild_tag" type="string" length="3"/>
-            <field name="equipment" type="EquipmentMapInfo"/> <!-- 33 -->
+            <field name="equipment" type="EquipmentMapInfo"/>
         </chunked>
     </struct>
 
