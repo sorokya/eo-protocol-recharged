@@ -28,7 +28,7 @@
         <value name="Dialog">25</value>
         <value name="Door">27</value>
         <value name="NpcRange">28</value>
-        <value name="Warp">29</value>
+        <value name="Map">29</value>
         <value name="Range">30</value>
         <value name="Refresh">31</value>
         <value name="Channel">32</value>
@@ -74,7 +74,6 @@
         <value name="Result">2</value>
         <value name="Confirm">4</value>
         <value name="View">5</value>
-        <value name="Take">6</value>
         <value name="Block">7</value> <!-- Sent when quest locks warp -->
         <value name="Delete">8</value>
         <value name="Time">9</value>
@@ -84,7 +83,7 @@
         <value name="Create">13</value>
         <value name="Add">14</value>
         <value name="Set">15</value>
-        <value name="Start">16</value> <!-- Sent when starting to gather -->
+        <value name="Take">16</value>
         <value name="Do">17</value>
         <value name="Buy">18</value>
         <value name="Sell">19</value>
