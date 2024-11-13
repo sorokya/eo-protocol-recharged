@@ -27,6 +27,16 @@
         <value name="Permanent">2</value>
     </enum>
 
+    <enum name="InnUnsubscriptResult" type="char">
+      <value name="NotCitizen">0</value>
+      <value name="Unsubscribed">1</value>
+    </enum>
+
+    <enum name="ChatResult" type="short">
+      <comment>Result code sent with Chat_Result packets</comment>
+      <value name="NotFound">1</value>
+    </enum>
+
     <enum name="LoginResult" type="short">
         <comment>
             Result code sent with LOGIN_REPLY packet.
@@ -97,7 +107,12 @@
       <value name="BlinkingRed">4</value>
       <value name="BlinkingXs">5</value>
       <value name="Confetti">6</value>
-      <value name="Hearts">7</value>
+      <value name="Heart">7</value>
+      <value name="Sword">8</value>
+      <value name="Skull">9</value>
+      <value name="Trophy">10</value>
+      <value name="RedFlag">11</value>
+      <value name="BlueFlag">12</value>
     </enum>
 
     <enum name="WarpType" type="char">
@@ -116,6 +131,15 @@
         <value name="DayMode">0</value>
         <value name="LightAdjustment">1</value>
     </enum>
+
+    <struct name="GlobalBackfillMessage">
+        <comment>A backfilled global chat message</comment>
+        <chunked>
+            <field name="name" type="string"/>
+            <break/>
+            <field name="message" type="string"/>
+        </chunked>
+    </struct>
 
     <struct name="MapFile">
         <comment>A map file (EMF)</comment>
@@ -317,7 +341,7 @@
             <field name="tp" type="three"/>
             <field name="max_tp" type="three"/>
             <field name="guild_tag" type="string" length="3"/>
-            <field name="equipment" type="EquipmentMapInfo"/>
+            <field name="equipment" type="EquipmentMapInfo"/> <!-- 33 -->
         </chunked>
     </struct>
 
@@ -389,6 +413,15 @@
         <field name="message" type="string" length="message_length"/>
     </struct>
 
+    <packet family="Boss" action="Syn1">
+      <comment>Boss bar sync</comment>
+      <field name="npc_index" type="short"/>
+      <field name="npc_id" type="short"/>
+      <field name="hp" type="three"/>
+      <field name="hp_percentage" type="char"/>
+      <field name="killed" type="bool"/>
+    </packet>
+
     <packet family="Cast" action="Self">
       <comment>Nearby player casting spell on their self</comment>
       <field name="player_id" type="short"/>
@@ -401,6 +434,37 @@
       <field name="tp" type="three" optional="true">
           <comment>The official client reads this if the packet is larger than 12 bytes</comment>
       </field>
+    </packet>
+
+    <packet family="Inn" action="Open">
+      <comment>Response from talking to an inn-keeper NPC</comment>
+      <chunked>
+          <field name="behavior_id" type="three"/>
+          <field name="current_home_id" type="char"/>
+          <field name="session_id" type="short"/>
+          <break/>
+          <array name="questions" type="string" length="3" delimited="true" trailing-delimiter="false"/>
+      </chunked>
+    </packet>
+
+    <packet family="Inn" action="Request">
+      <comment>Reply to requesting to sleep at an inn</comment>
+      <field name="cost" type="int"/>
+    </packet>
+
+    <packet family="Inn" action="Confirm">
+      <comment>Sleeping at an inn</comment>
+      <field name="total_eons" type="int"/>
+    </packet>
+
+    <packet family="Inn" action="Result">
+      <comment>Reply to subscribing to a town</comment>
+      <field name="questions_wrong" type="char"/>
+    </packet>
+
+    <packet family="Inn" action="Delete">
+      <comment>Reply to giving up citizenship of a town</comment>
+      <field name="result_code" type="InnUnsubscriptResult"/>
     </packet>
 
     <packet family="Item" action="Drop">
@@ -610,6 +674,36 @@
         </chunked>
     </packet>
 
+    <packet family="Game" action="Block">
+      <comment>Show waiting for players banner</comment>
+      <field name="unk" type="char"/>
+      <field name="num_players" type="char"/>
+    </packet>
+
+    <packet family="Game" action="List">
+      <comment>Update game score</comment>
+      <field name="unk1" type="char"/>
+      <field name="unk2" type="short"/>
+      <field name="red_score" type="short"/>
+      <field name="blue_score" type="short"/>
+    </packet>
+
+    <packet family="Game" action="Emote">
+      <comment>Shows "come and join" message in status bar</comment>
+      <field name="unk" type="short"/>
+    </packet>
+
+    <packet family="Game" action="Drop">
+      <comment>Plays timer ticking noise</comment>
+      <field name="unk" type="char"/> <!-- If 11 it shows "round delayed" message -->
+    </packet>
+
+    <packet family="Game" action="Do">
+      <comment>Show banner when game is launched</comment>
+      <field name="banner_type" type="char"/> <!-- 1 - line up for next match, 11 & 12 & 13 - fight! 21 whack-a-mole -->
+      <field name="num_players" type="char"/>
+    </packet>
+
     <packet family="GameBar" action="List">
       <comment>Player leveled up</comment>
       <field name="level" type="short"/>
@@ -792,6 +886,41 @@
       <field name="coords" type="Coords"/>
     </packet>
 
+    <packet family="Move" action="Do">
+      <comment>Nearby player moved (no walk animation)</comment>
+      <field name="player_id" type="short"/>
+      <field name="direction" type="Direction"/>
+      <field name="coords" type="Coords"/>
+    </packet>
+
+    <packet family="Music" action="Open">
+      <comment>Reply to opening a jukebox</comment>
+      <field name="map_id" type="short"/>
+      <field name="requester_name" type="string" optional="true">
+        <comment>Name of player who requested current song</comment>
+      </field>
+    </packet>
+
+    <packet family="Music" action="Result">
+      <comment>Reply to unsuccessfully requesting a song</comment>
+      <dummy type="short">1</dummy>
+    </packet>
+
+    <packet family="Music" action="Set">
+      <comment>Play background music</comment>
+      <field name="mfx_id" type="char"/>
+    </packet>
+
+    <packet family="Music" action="Do">
+      <comment>Play jukebox track</comment>
+      <field name="track_id" type="short"/>
+    </packet>
+
+    <packet family="Music" action="Update">
+      <comment>Reply to successfully requesting a song</comment>
+      <field name="total_eons" type="int"/>
+    </packet>
+
     <packet family="Music" action="Play">
       <comment>Nearby player playing an instrument</comment>
       <field name="player_id" type="short"/>
@@ -839,6 +968,11 @@
       <field name="item" type="Item"/>
       <field name="total_eons" type="int"/>
       <field name="weight" type="Weight"/>
+    </packet>
+
+    <packet family="Shop" action="Block">
+      <comment>Reply from being too low level to use a shop</comment>
+      <field name="min_level" type="short"/>
     </packet>
 
     <packet family="Security" action="Set">
@@ -1022,16 +1156,16 @@
       <field name="warp_animation" type="WarpAnimation"/>
     </packet>
 
-    <packet family="Npc" action="Set">
-      <comment>Main NPC update messages</comment>
-      <chunked>
-        <array name="positions" type="NpcUpdatePosition"/>
-        <break/>
-        <array name="attacks" type="NpcUpdateAttack"/>
-        <break/>
-        <array name="chats" type="NpcUpdateChat"/>
-        <break/>
-      </chunked>
+    <packet family="Players" action="Spawn">
+      <comment>Nearby player transformed into an npc</comment>
+      <field name="player_id" type="short"/>
+      <field name="npc_id" type="short"/>
+    </packet>
+
+    <packet family="Chat" action="Set">
+      <comment>A local chat message</comment>
+      <field name="player_id" type="short"/>
+      <field name="message" type="string"/>
     </packet>
 
     <packet family="Chat" action="Private">
@@ -1040,16 +1174,103 @@
         <field name="name" type="string"/>
         <break/>
         <field name="message" type="string"/>
-        <break/>
       </chunked>
     </packet>
 
-    <packet family="Chat" action="Set">
-      <comment>A public message</comment>
-      <field name="player_id" type="short"/>
+    <packet family="Chat" action="Admin">
+      <comment>An admin group message</comment>
+      <chunked>
+        <field name="name" type="string"/>
+        <break/>
+        <field name="message" type="string"/>
+      </chunked>
+    </packet>
+
+    <packet family="Chat" action="Global">
+      <comment>An admin announcement</comment>
+      <chunked>
+        <field name="name" type="string"/>
+        <break/>
+        <field name="message" type="string"/>
+      </chunked>
+    </packet>
+
+    <packet family="Chat" action="Play">
+      <comment>A global chat message</comment>
+      <chunked>
+        <field name="name" type="string"/>
+        <break/>
+        <field name="message" type="string"/>
+      </chunked>
+    </packet>
+
+    <packet family="Chat" action="Request">
+      <comment>A guild message</comment>
+      <chunked>
+        <field name="name" type="string"/>
+        <break/>
+        <field name="message" type="string"/>
+      </chunked>
+    </packet>
+
+    <packet family="Chat" action="Update">
+      <comment>Adds message to system tab</comment>
       <field name="message" type="string"/>
     </packet>
- 
+
+    <packet family="Chat" action="Ping">
+      <comment>Silently adds message to system tab</comment>
+      <field name="message" type="string"/>
+    </packet>
+
+    <packet family="Chat" action="System">
+      <comment>Adds message to system tab</comment>
+      <field name="message" type="string"/>
+    </packet>
+
+    <packet family="Chat" action="Spawn">
+      <comment>Server message</comment>
+      <field name="message" type="string"/>
+    </packet>
+
+    <packet family="Chat" action="Block">
+      <comment>Player muted</comment>
+      <field name="admin_name" type="string"/>
+    </packet>
+
+    <packet family="Chat" action="New">
+      <comment>Player un-muted</comment>
+      <dummy type="byte">255</dummy>
+    </packet>
+
+    <packet family="Chat" action="Junk">
+      <comment>Clears all GLB messages from name</comment>
+      <field name="name" type="string"/>
+    </packet>
+
+    <packet family="Chat" action="Drop">
+      <comment>Remove messages from GLB</comment>
+      <field name="message_count" type="short"/>
+      <field name="show_friendly_reminder" type="bool"/>
+    </packet>
+
+    <packet family="Chat" action="Result">
+      <comment>Reply to trying to send a private message</comment>
+      <field name="result_code" type="ChatResult"/>
+      <switch field="result_code">
+        <case value="NotFound">
+          <field name="name" type="string"/>
+        </case>
+      </switch>
+    </packet>
+
+    <packet family="Chat" action="List">
+      <comment>Global chat backfill</comment>
+      <chunked>
+        <array name="messages" type="GlobalBackfillMessage" delimited="true"/>
+      </chunked>
+    </packet>
+
     <packet family="Chat" action="Syn4">
       <comment>Banner message</comment>
       <field name="type" type="BannerType"/>
@@ -1059,6 +1280,7 @@
       <field name="permanent" type="bool">
         <comment>If true the banner will show until a new banner is shown or the player logs out</comment>
       </field>
+      <field name="unk" type="char"/>
       <field name="message" type="string"/>
     </packet>
 
@@ -1083,9 +1305,27 @@
         <array name="items" type="ThreeItem"/>
     </packet>
 
+    <packet family="Emote" action="Set">
+      <comment>Nearby player emoting</comment>
+      <field name="player_id" type="short"/>
+      <field name="emote" type="Emote"/>
+    </packet>
+
     <packet family="Npc" action="Update">
       <comment>NPCs appearing in nearby view</comment>
       <field name="npc" type="NpcMapInfo"/>
+    </packet>
+
+    <packet family="Npc" action="Set">
+      <comment>Main NPC update messages</comment>
+      <chunked>
+        <array name="positions" type="NpcUpdatePosition"/>
+        <break/>
+        <array name="attacks" type="NpcUpdateAttack"/>
+        <break/>
+        <array name="chats" type="NpcUpdateChat"/>
+        <break/>
+      </chunked>
     </packet>
 
     <packet family="Npc" action="Spawn">
@@ -1100,16 +1340,44 @@
       <value name="Heart">3</value>
     </enum>
 
-    <packet family="Npc" action="Emote">
-      <comment>NPC emoting</comment>
-      <field name="npc_index" type="short"/>
-      <field name="emote" type="NpcEmote"/>
+    <packet family="Npc" action="Delete">
+      <comment>Remove NPCs from nearby view</comment>
+      <array name="npc_indexes" type="short"/>
     </packet>
 
-    <packet family="Emote" action="Set">
-      <comment>Nearby player emoting</comment>
-      <field name="player_id" type="short"/>
-      <field name="emote" type="Emote"/>
+    <packet family="Npc" action="Swap">
+      <comment>NPC changing facing direction</comment>
+      <field name="npc_index" type="short"/>
+      <field name="direction" type="Direction"/>
+    </packet>
+
+    <packet family="Npc" action="Talk">
+      <comment>NPC chat message</comment>
+      <field name="npc_index" type="short"/>
+      <field name="message" type="string"/>
+    </packet>
+
+    <packet family="Npc" action="Junk">
+        <comment>Clearing all boss children</comment>
+        <field name="npc_id" type="short"/>
+    </packet>
+
+    <packet family="Npc" action="Emote">
+      <comment>NPC Emoting</comment>
+      <field name="npc_index" type="short"/>
+      <field name="emote" type="NpcEmote"/>
+      <field name="unk1" type="char" optional="true"/>
+      <field name="unk2" type="char" optional="true"/>
+      <field name="sfx_id" type="char" optional="true">
+        <comment>Only plays if unk1 and unk2 are set too</comment>
+      </field>
+    </packet>
+
+    <packet family="Npc" action="Pickup">
+      <comment>Reply to picking up an npc</comment>
+      <field name="npc_index" type="short"/>
+      <field name="coords" type="Coords"/>
+      <field name="sfx_id" type="char"/>
     </packet>
 
     <packet family="Range" action="Result">
@@ -1117,13 +1385,8 @@
       <field name="nearby" type="NearbyInfo"/>
     </packet>
 
-    <packet family="Rest" action="Set">
-      <comment>Nearby player sitting down</comment>
-      <field name="player_id" type="short"/>
-      <field name="coords" type="Coords"/>
-      <field name="direction" type="Direction"/>
-      <!-- Sent by the official server and ignored by the official client -->
-      <field type="char">0</field>
+    <packet family="Refresh" action="Result">
+      <field name="nearby" type="NearbyInfo"/>
     </packet>
 
     <packet family="Rest" action="Delete">
@@ -1132,35 +1395,58 @@
         <field name="coords" type="Coords"/>
     </packet>
 
-    <packet family="Refresh" action="Result">
-      <field name="nearby" type="NearbyInfo"/>
-    </packet>
-
     <packet family="Rest" action="Close">
-      <comment>Nearby player standing</comment>
+      <comment>Player standing</comment>
       <field name="player_id" type="short"/>
       <field name="coords" type="Coords"/>
     </packet>
 
     <packet family="Rest" action="Result">
+      <comment>Player sitting</comment>
+      <field name="player_id" type="short"/>
+      <field name="coords" type="Coords"/>
+      <field name="direction" type="Direction"/>
+      <!-- Sent by the official server and ignored by the official client -->
+      <field type="char">0</field>
+    </packet>
+
+    <packet family="Rest" action="Set">
       <comment>Nearby player sitting</comment>
       <field name="player_id" type="short"/>
       <field name="coords" type="Coords"/>
       <field name="direction" type="Direction"/>
-      <field name="unk" type="char"/>
-    </packet>
-
-    <packet family="Sit" action="Result">
-        <comment>Your character sitting on a chair</comment>
-        <field name="player_id" type="short"/>
-        <field name="coords" type="Coords"/>
-        <field name="direction" type="Direction"/>
+      <!-- Sent by the official server and ignored by the official client -->
+      <field type="char">0</field>
     </packet>
 
     <packet family="Sit" action="Close">
-        <comment>Your character standing up from a chair</comment>
-        <field name="player_id" type="short"/>
-        <field name="coords" type="Coords"/>
+      <comment>Player standing from a chair</comment>
+      <field name="player_id" type="short"/>
+      <field name="coords" type="Coords"/>
+    </packet>
+
+    <packet family="Sit" action="Delete">
+      <comment>Nearby player standing from a chair</comment>
+      <field name="player_id" type="short"/>
+      <field name="coords" type="Coords"/>
+    </packet>
+
+    <packet family="Sit" action="Result">
+      <comment>Player sitting in a chair</comment>
+      <field name="player_id" type="short"/>
+      <field name="coords" type="Coords"/>
+      <field name="direction" type="Direction"/>
+      <!-- Sent by the official server and ignored by the official client -->
+      <field type="char">0</field>
+    </packet>
+
+    <packet family="Sit" action="Set">
+      <comment>Nearby player sitting in a chair</comment>
+      <field name="player_id" type="short"/>
+      <field name="coords" type="Coords"/>
+      <field name="direction" type="Direction"/>
+      <!-- Sent by the official server and ignored by the official client -->
+      <field type="char">0</field>
     </packet>
 
     <packet family="Attack" action="Set">
@@ -1183,19 +1469,50 @@
       <field name="unk3" type="char"/>
     </packet>
 
+    <packet family="Fishing" action="Take">
+      <comment>Nearby player caught a fish</comment>
+      <field name="player_id" type="short"/>
+      <field name="item_id" type="short"/>
+      <field name="y_offset" type="char"/>
+    </packet>
+
     <packet family="Fishing" action="Result">
       <comment>Fishing result</comment>
       <field name="item" type="ThreeItem"/>
       <field name="current_weight" type="short"/>
-      <field name="unk" type="char"/>
+      <field name="y_offset" type="char"/>
     </packet>
 
     <packet family="Fishing" action="Open">
+      <comment>Player started fishing</comment>
+      <field name="player_id" type="short"/>
+      <field name="coords" type="Coords"/>
+      <field name="direction" type="Direction"/>
+      <field name="unk" type="char"/>
+    </packet>
+
+    <packet family="Fishing" action="Set">
       <comment>Nearby player started fishing</comment>
       <field name="player_id" type="short"/>
       <field name="coords" type="Coords"/>
       <field name="direction" type="Direction"/>
       <field name="unk" type="char"/>
+    </packet>
+
+    <packet family="Fishing" action="Update">
+      <comment>Nearby player random bobber movement</comment>
+      <field name="player_id" type="short"/>
+    </packet>
+
+    <packet family="Fishing" action="Close">
+      <comment>Nearby player stopped fishing</comment>
+      <field name="player_id" type="short"/>
+    </packet>
+
+    <packet family="Fishing" action="Junk">
+      <comment>Reply to trying to fish overweight</comment>
+      <field name="player_id" type="short"/>
+      <field name="weight" type="Weight"/>
     </packet>
 
     <packet family="Attack" action="Drop">
