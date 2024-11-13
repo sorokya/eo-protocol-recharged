@@ -352,6 +352,17 @@
       <field name="shop_id" type="int"/>
     </packet>
 
+    <packet family="Sound" action="Set">
+      <comment>Play sound effect</comment>
+      <field name="sound_id" type="short"/>
+      <field name="unk1" type="char" optional="true">
+        <comment>Set to value to play client effect instead of custom</comment>
+      </field>
+      <field name="unk2" type="char" optional="true">
+        <comment>Set to value to play client effect instead of custom</comment>
+      </field>
+    </packet>
+
     <packet family="Map" action="Confirm">
       <comment>Confirming warp request</comment>
       <field name="map_id" type="short"/>
