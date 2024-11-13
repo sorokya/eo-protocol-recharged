@@ -1034,6 +1034,12 @@
         <break/>
       </chunked>
     </packet>
+
+    <packet family="Chat" action="Set">
+      <comment>A public message</comment>
+      <field name="player_id" type="short"/>
+      <field name="message" type="string"/>
+    </packet>
  
     <packet family="Chat" action="Syn4">
       <comment>Banner message</comment>
@@ -1047,6 +1053,27 @@
       <field name="message" type="string"/>
     </packet>
 
+    <packet family="Chest" action="Open">
+        <comment>Reply to opening a chest</comment>
+        <field name="coords" type="Coords"/>
+        <array name="items" type="ThreeItem"/>
+    </packet>
+
+    <packet family="Chest" action="Result">
+        <comment>Reply to placing an item in to a chest</comment>
+        <field name="added_item_id" type="short"/>
+        <field name="remaining_amount" type="int"/>
+        <field name="weight" type="Weight"/>
+        <array name="items" type="ThreeItem"/>
+    </packet>
+
+    <packet family="Chest" action="Pickup">
+        <comment>Reply to removing an item from a chest</comment>
+        <field name="taken_item" type="ThreeItem"/>
+        <field name="weight" type="Weight"/>
+        <array name="items" type="ThreeItem"/>
+    </packet>
+
     <packet family="Npc" action="Update">
       <comment>NPCs appearing in nearby view</comment>
       <field name="npc" type="NpcMapInfo"/>
@@ -1057,9 +1084,43 @@
       <field name="npc" type="NpcMapInfo"/>
     </packet>
 
+    <enum name="NpcEmote" type="char">
+      <comment>Emote type for NPCs</comment>
+      <value name="Alert">1</value>
+      <value name="Reserved2">2</value>
+      <value name="Heart">3</value>
+    </enum>
+
+    <packet family="Npc" action="Emote">
+      <comment>NPC emoting</comment>
+      <field name="npc_index" type="short"/>
+      <field name="emote" type="NpcEmote"/>
+    </packet>
+
+    <packet family="Emote" action="Set">
+      <comment>Nearby player emoting</comment>
+      <field name="player_id" type="short"/>
+      <field name="emote" type="Emote"/>
+    </packet>
+
     <packet family="Range" action="Result">
       <comment>Nearby players or npcs appearing</comment>
       <field name="nearby" type="NearbyInfo"/>
+    </packet>
+
+    <packet family="Rest" action="Set">
+      <comment>Nearby player sitting down</comment>
+      <field name="player_id" type="short"/>
+      <field name="coords" type="Coords"/>
+      <field name="direction" type="Direction"/>
+      <!-- Sent by the official server and ignored by the official client -->
+      <field type="char">0</field>
+    </packet>
+
+    <packet family="Rest" action="Delete">
+        <comment>Nearby player standing up</comment>
+        <field name="player_id" type="short"/>
+        <field name="coords" type="Coords"/>
     </packet>
 
     <packet family="Refresh" action="Result">
@@ -1078,6 +1139,19 @@
       <field name="coords" type="Coords"/>
       <field name="direction" type="Direction"/>
       <field name="unk" type="char"/>
+    </packet>
+
+    <packet family="Sit" action="Result">
+        <comment>Your character sitting on a chair</comment>
+        <field name="player_id" type="short"/>
+        <field name="coords" type="Coords"/>
+        <field name="direction" type="Direction"/>
+    </packet>
+
+    <packet family="Sit" action="Close">
+        <comment>Your character standing up from a chair</comment>
+        <field name="player_id" type="short"/>
+        <field name="coords" type="Coords"/>
     </packet>
 
     <packet family="Attack" action="Set">
@@ -1155,7 +1229,7 @@
       <field name="unk" type="char"/>
     </packet>
 
-    <packet family="Warp" action="Confirm">
+    <packet family="Map" action="Confirm">
       <comment>Requesting player to warp to another map</comment>
       <field name="warp_type" type="WarpType"/>
       <field name="map_id" type="short"/>
@@ -1168,7 +1242,7 @@
       <field name="session_id" type="short"/>
     </packet>
 
-    <packet family="Warp" action="Update">
+    <packet family="Map" action="Update">
       <comment>Entering a new map</comment>
       <field name="warp_type" type="WarpType"/>
       <field name="map_id" type="short"/>
@@ -1194,7 +1268,7 @@
         <field type="char">0</field>
     </packet>
 
-    <packet family="Warp" action="Time">
+    <packet family="Map" action="Time">
         <comment>Time of day change</comment>
         <field name="change_type" type="WarpTimeChangeType"/>
         <switch field="change_type">

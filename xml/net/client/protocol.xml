@@ -4,11 +4,26 @@
       <value name="Sit">1</value>
       <value name="Stand">2</value>
     </enum>
+
+    <packet family="Account" action="Open">
+      <comment>Account info request</comment>
+      <dummy type="byte">255</dummy>
+    </packet>
  
     <packet family="Attack" action="Do">
       <comment>Attacking</comment>
       <field name="direction" type="Direction"/>
       <field name="timestamp" type="three"/>
+    </packet>
+
+    <packet family="Bank" action="Open">
+        <comment>Talked to a banker NPC</comment>
+        <field name="npc_index" type="short"/>
+    </packet>
+
+    <packet family="MsgBoard" action="Open">
+        <comment>Opening a town board</comment>
+        <field name="board_id" type="short"/>
     </packet>
 
     <packet family="Captcha" action="Request">
@@ -48,6 +63,31 @@
       </chunked>
     </packet>
 
+    <packet family="Character" action="Request">
+        <comment>Request to create a character</comment>
+        <chunked>
+            <field name="request_string" type="string">NEW</field>
+            <break/>
+        </chunked>
+    </packet>
+
+    <packet family="Chest" action="Open">
+        <comment>Opening a chest</comment>
+        <field name="coords" type="Coords"/>
+    </packet>
+
+    <packet family="Chest" action="Add">
+        <comment>Placing an item in to a chest</comment>
+        <field name="coords" type="Coords"/>
+        <field name="add_item" type="ThreeItem"/>
+    </packet>
+
+    <packet family="Chest" action="Take">
+        <comment>Taking an item from a chest</comment>
+        <field name="coords" type="Coords"/>
+        <field name="take_item_id" type="short"/>
+    </packet>
+
     <packet family="Direction" action="Set">
       <comment>Changing direction</comment>
       <field name="direction" type="Direction"/>
@@ -55,10 +95,10 @@
 
     <packet family="Emote" action="Public">
       <comment>Emoting</comment>
-      <field name="emote" type="char"/>
+      <field name="emote" type="Emote"/>
     </packet>
 
-    <packet family="Gather" action="Start">
+    <packet family="Gather" action="Take">
       <comment>Start gathering</comment>
       <field name="gather_index" type="char"/>
     </packet>
@@ -94,6 +134,11 @@
       <comment>Group invite/join request</comment>
       <field name="request_type" type="PartyRequestType"/>
       <field name="player_id" type="short"/>
+    </packet>
+
+    <packet family="Guild" action="Open">
+        <comment>Talking to a guild master NPC</comment>
+        <field name="npc_index" type="short"/>
     </packet>
 
     <packet family="Init" action="Init">
@@ -138,6 +183,11 @@
         </chunked>
     </packet>
 
+    <packet family="Locker" action="Open">
+        <comment>Opening a bank locker</comment>
+        <field name="locker_coords" type="Coords"/>
+    </packet>
+
     <!-- TODO: Confirm there is a break byte here -->
     <packet family="Magic" action="Area">
       <comment>Casting area spell</comment>
@@ -173,6 +223,11 @@
       <field name="note" type="char"/>
     </packet>
 
+    <packet family="Paperdoll" action="Request">
+        <comment>Request for a player's paperdoll</comment>
+        <field name="player_id" type="short"/>
+    </packet>
+
     <packet family="Paperdoll" action="Add">
       <comment>Equip an item</comment>
       <field name="item_id" type="short"/>
@@ -203,6 +258,11 @@
     <packet family="Player" action="Request">
       <comment>Requesting online player list</comment>
       <dummy type="byte">255</dummy>
+    </packet>
+
+    <packet family="Door" action="Open">
+        <comment>Opening a door</comment>
+        <field name="coords" type="Coords"/>
     </packet>
 
     <enum name="RangeRequestType" type="char">
@@ -240,6 +300,16 @@
                   <comment>The coordinates of the map cursor</comment>
               </field>
           </case>
+        </switch>
+    </packet>
+
+    <packet family="Sit" action="Set">
+        <comment>Sitting on a chair</comment>
+        <field name="sit_action" type="SitAction"/>
+        <switch field="sit_action">
+            <case value="Sit">
+                <field name="coords" type="Coords"/>
+            </case>
         </switch>
     </packet>
 
@@ -282,13 +352,13 @@
       <field name="shop_id" type="int"/>
     </packet>
 
-    <packet family="Warp" action="Confirm">
+    <packet family="Map" action="Confirm">
       <comment>Confirming warp request</comment>
       <field name="map_id" type="short"/>
       <field name="session_id" type="short"/>
     </packet>
 
-    <packet family="Warp" action="Start">
+    <packet family="Map" action="Take">
       <comment>Request to download a copy of the map</comment>
       <field name="map_id" type="short"/>
       <field name="session_id" type="short"/>
