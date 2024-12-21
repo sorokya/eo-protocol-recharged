@@ -1096,10 +1096,6 @@
                 <break/>
                 <field name="title" type="string"/>
                 <break/>
-                <field name="guild" type="string"/>
-                <break/>
-                <field name="guild_rank_name" type="string"/>
-                <break />
                 <field name="class_id" type="char"/>
                 <field name="guild_tag" type="string" length="3"/>
                 <field name="admin_level" type="AdminLevel"/>
