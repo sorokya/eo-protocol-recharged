@@ -467,6 +467,21 @@
       <field name="result_code" type="InnUnsubscriptResult"/>
     </packet>
 
+    <packet family="Item" action="Add">
+      <comment>Item dropped nearby</comment>
+      <field name="item_id" type="short"/>
+      <field name="power" type="char"/>
+      <field name="accuracy" type="char"/>
+      <field name="dexterity" type="char"/>
+      <field name="defense" type="char"/>
+      <field name="vitality" type="char"/>
+      <field name="aura" type="char"/>
+      <field name="item_index" type="short"/>
+      <field name="amount" type="three"/>
+      <field name="coords" type="Coords"/>
+      <field name="player_id" type="short"/>
+    </packet>
+
     <packet family="Item" action="Drop">
       <comment>Reply to dropping an item</comment>
       <field name="item" type="ThreeItem"/>
