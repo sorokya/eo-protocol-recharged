@@ -67,7 +67,7 @@
         <value name="AmbientSource3">35</value>
         <value name="TimedSpikes">36</value>
         <value name="Spikes">37</value>
-        <value name="HiddenSpikes">38</value>
+        <value name="Well">38</value>
         <value name="FishingDown">61</value>
         <value name="FishingLeft">62</value>
         <value name="FishingUp">63</value>
