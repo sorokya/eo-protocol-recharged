@@ -11,8 +11,8 @@
         <value name="Account">4</value>
         <value name="Character">5</value>
         <value name="Play">6</value>
-        <value name="Move">7</value>
-        <value name="Direction">8</value>
+        <value name="Direction">7</value>
+        <value name="Move">8</value>
         <value name="Sit">9</value>
         <value name="Rest">10</value>
         <value name="Attack">11</value>
@@ -78,9 +78,9 @@
         <value name="View">5</value>
         <value name="Block">7</value> <!-- Sent when quest locks warp -->
         <value name="Delete">8</value>
-        <value name="Time">9</value>
+        <value name="Update">9</value>
         <value name="Spawn">10</value> <!-- Sent when npc spawns -->
-        <value name="Update">11</value>
+        <value name="Time">11</value>
         <value name="New">12</value>
         <value name="Create">13</value>
         <value name="Add">14</value>
@@ -111,8 +111,8 @@
         <value name="Area">41</value>
         <value name="Admin">43</value>
         <value name="Rank">44</value>
-        <value name="Play">45</value>
-        <value name="Emote">46</value>
+        <value name="Emote">45</value>
+        <value name="Play">46</value>
         <value name="Config">230</value>
         <value name="Syn1">241</value>
         <value name="Syn2">242</value>

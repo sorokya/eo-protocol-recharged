@@ -332,7 +332,7 @@
             <field name="direction_sitting_hiding" type="char"/>
             <field name="unk3" type="char"/>
             <field name="level" type="short"/>
-            <field name="unk5" type="char"/>
+            <field name="unk4" type="char"/>
             <field name="gender_skin" type="char"/>
             <field name="hair_style" type="char"/>
             <field name="hair_color" type="char"/>
@@ -374,7 +374,7 @@
 
     <struct name="NearbyInfo">
         <comment>Information about nearby entities</comment>
-        <length name="characters_count" type="char"/>
+        <length name="characters_count" type="short"/>
         <chunked>
             <break/>
             <array name="characters" type="CharacterMapInfo" length="characters_count" delimited="true"/>
