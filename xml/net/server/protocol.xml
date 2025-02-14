@@ -467,6 +467,13 @@
       <field name="result_code" type="InnUnsubscriptResult"/>
     </packet>
 
+    <packet family="Item" action="Update">
+      <comment>Items appearing in nearby view</comment>
+      <chunked>
+        <array name="items" type="ItemMapInfo" delimited="true"/>
+      </chunked>
+    </packet>
+
     <packet family="Item" action="Add">
       <comment>Item dropped nearby</comment>
       <field name="item_id" type="short"/>
@@ -1058,14 +1065,16 @@
             <field name="unk11" type="char"/>
             <field name="experience_display_mode" type="ExperienceDisplayMode"/>
             <field name="unk12" type="short"/>
-            <field name="unk13" type="short"/>
+            <field name="unk13" type="char"/>
             <field name="unk14" type="short"/>
-            <break/>
             <field name="unk15" type="short"/>
+            <field name="unk16" type="char"/>
+            <break/>
+            <field name="unk17" type="short"/>
             <break/>
             <field name="motd" type="string"/>
             <break/>
-            <field name="unk16" type="char"/>
+            <field name="unk18" type="char"/>
             <field name="equipment" type="EquipmentPlay"/>
             <break/>
             <field name="weight" type="Weight"/>
@@ -1073,7 +1082,6 @@
             <break/>
             <array name="spells" type="Spell"/>
             <break/>
-            <field name="nearby" type="NearbyInfo"/>
         </chunked>
     </packet>
 
@@ -1153,7 +1161,9 @@
 
     <packet family="Player" action="Update">
       <comment>Player has appeared in nearby view</comment>
-      <field name="nearby" type="NearbyInfo"/>
+      <chunked>
+        <array name="characters" type="CharacterMapInfo" delimited="true"/>
+      </chunked>
     </packet>
 
     <packet family="Player" action="Delete">
@@ -1324,7 +1334,9 @@
 
     <packet family="Npc" action="Update">
       <comment>NPCs appearing in nearby view</comment>
-      <field name="npc" type="NpcMapInfo"/>
+      <chunked>
+        <array name="npcs" type="NpcMapInfo" delimited="true"/>
+      </chunked>
     </packet>
 
     <packet family="Npc" action="Set">
