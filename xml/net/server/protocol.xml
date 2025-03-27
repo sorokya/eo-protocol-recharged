@@ -126,7 +126,7 @@
       <value name="Admin">2</value>
     </enum>
 
-    <enum name="WarpTimeChangeType" type="char">
+    <enum name="MapTimeChangeType" type="char">
         <comment>Defines the change type for warp time.</comment>
         <value name="DayMode">0</value>
         <value name="LightAdjustment">1</value>
@@ -783,6 +783,14 @@
     </packet>
 
     <packet family="Gather" action="Update">
+      <comment>Gather spots amount updating</comment>
+      <field name="map_id" type="short"/>
+      <chunked>
+        <array name="gathers" type="GatherMapInfo" delimited="true"/>
+      </chunked>
+    </packet>
+
+    <packet family="Gather" action="Update2">
       <comment>Gather spot amount updating</comment>
       <field name="gather_index" type="char"/>
       <field name="amount" type="char"/>
@@ -969,6 +977,8 @@
       <field name="unk1" type="char"/>
       <field name="cost" type="three"/>
       <field name="unk2" type="three"/>
+      <field name="unk3" type="short"/>
+      <field name="unk4" type="char"/>
       <array name="ingredients" type="ShopCraftIngredient" length="4"/>
     </struct>
 
@@ -1374,10 +1384,11 @@
       <field name="direction" type="Direction"/>
     </packet>
 
-    <packet family="Npc" action="Talk">
+    <packet family="Npc" action="View">
       <comment>NPC chat message</comment>
       <field name="npc_index" type="short"/>
-      <field name="message" type="string"/>
+      <length name="message_length" type="char"/>
+      <field name="message" type="string" length="message_length"/>
     </packet>
 
     <packet family="Npc" action="Junk">
@@ -1410,6 +1421,11 @@
 
     <packet family="Refresh" action="Result">
       <field name="nearby" type="NearbyInfo"/>
+    </packet>
+
+    <packet family="Refresh" action="Delete">
+      <comment>Clear nearby info</comment>
+      <dummy type="char">0</dummy>
     </packet>
 
     <packet family="Rest" action="Delete">
@@ -1522,7 +1538,7 @@
       <field name="unk" type="char"/>
     </packet>
 
-    <packet family="Fishing" action="Update">
+    <packet family="Fishing" action="Update2">
       <comment>Nearby player random bobber movement</comment>
       <field name="player_id" type="short"/>
     </packet>
@@ -1591,7 +1607,7 @@
       <field name="session_id" type="short"/>
     </packet>
 
-    <packet family="Map" action="Update">
+    <packet family="Map" action="Update2">
       <comment>Entering a new map</comment>
       <field name="warp_type" type="WarpType"/>
       <field name="map_id" type="short"/>
@@ -1603,7 +1619,6 @@
       <field name="unk5" type="char"/>
       <field name="unk6" type="char"/>
       <field name="warp_animation" type="WarpAnimation"/>
-      <field name="nearby" type="NearbyInfo"/>
     </packet>
 
     <packet family="System" action="Syn3">
@@ -1619,7 +1634,7 @@
 
     <packet family="Map" action="Time">
         <comment>Time of day change</comment>
-        <field name="change_type" type="WarpTimeChangeType"/>
+        <field name="change_type" type="MapTimeChangeType"/>
         <switch field="change_type">
             <case value="DayMode">
                 <field name="daymode" type="char"/>

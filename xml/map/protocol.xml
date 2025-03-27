@@ -322,17 +322,18 @@
         <field name="unk18" type="char"/>
         <field name="unk19" type="char"/>
         <field name="unk20" type="char"/>
+        <field name="unk21" type="char"/>
 
         <length name="npcs_count" type="char"/>
         <array name="npcs" type="MapNpc" length="npcs_count"/>
 
-        <field name="unk21" type="char"/>
+        <field name="unk22" type="char"/>
 
         <length name="unk_count" type="char"/>
         <array name="unks" type="MapUnk" length="unk_count"/>
 
-        <field name="unk22" type="char"/>
         <field name="unk23" type="char"/>
+        <field name="unk24" type="char"/>
 
         <length name="items_count" type="char"/>
         <array name="items" type="MapItem" length="items_count"/>
