@@ -49,6 +49,11 @@
       <field name="channel_id" type="char"/>
     </packet>
 
+    <packet family="Chat" action="Request">
+      <comment>Sending a guild chat message</comment>
+      <field name="message" type="string"/>
+    </packet>
+
     <packet family="Chat" action="Set">
       <comment>Sending a public chat message</comment>
       <field name="message" type="string"/>

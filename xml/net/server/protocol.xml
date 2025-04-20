@@ -7,13 +7,13 @@
           <comment>The official client won't display a message until the connection from the server is closed</comment>
           3
         </value>
-        <value name="WarpMap">4</value>
+        <value name="MapMutation">4</value>
         <value name="FileEmf">5</value>
         <value name="FileEif">6</value>
         <value name="FileEnf">7</value>
         <value name="FileEsf">8</value>
         <value name="PlayersList">20</value>
-        <value name="MapMutation">10</value>
+        <value name="WarpMap">10</value>
         <value name="PlayersListFriends">22</value>
         <value name="FileEcf">12</value>
     </enum>
@@ -1226,8 +1226,8 @@
       </chunked>
     </packet>
 
-    <packet family="Chat" action="Play">
-      <comment>A global chat message</comment>
+    <packet family="Chat" action="Request">
+      <comment>A guild message</comment>
       <chunked>
         <field name="name" type="string"/>
         <break/>
@@ -1235,8 +1235,8 @@
       </chunked>
     </packet>
 
-    <packet family="Chat" action="Request">
-      <comment>A guild message</comment>
+    <packet family="Chat" action="Play">
+      <comment>A global chat message</comment>
       <chunked>
         <field name="name" type="string"/>
         <break/>
